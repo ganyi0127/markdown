@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="J0Z-IK-ZCT">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--新建待办事项-->
+        <scene sceneID="UMT-Sk-acG">
+            <objects>
+                <viewController id="J0Z-IK-ZCT" customClass="EditVC" customModule="Markdown" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cx1-2r-EPm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nCd-p4-XAe">
+                                <rect key="frame" x="16" y="20" width="167.5" height="30"/>
+                                <state key="normal" title="yyyy-MM-dd"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tQM-2Q-oVX">
+                                <rect key="frame" x="191.5" y="20" width="167.5" height="30"/>
+                                <state key="normal" title="HH:mm:ss"/>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ssy-Le-Q9e">
+                                <rect key="frame" x="16" y="58" width="343" height="542"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="J0Z-IK-ZCT" id="2Nt-us-hoh"/>
+                                </connections>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JGP-i7-9DT">
+                                <rect key="frame" x="16" y="608" width="39" height="39"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="JGP-i7-9DT" secondAttribute="height" multiplier="1:1" id="mvY-Vd-Ynx"/>
+                                </constraints>
+                                <state key="normal" title="notify"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nCd-p4-XAe" firstAttribute="top" secondItem="qdw-IU-51E" secondAttribute="top" id="1dZ-k7-PFn"/>
+                            <constraint firstItem="ssy-Le-Q9e" firstAttribute="top" secondItem="nCd-p4-XAe" secondAttribute="bottom" constant="8" id="7EV-Fq-0Gw"/>
+                            <constraint firstItem="tQM-2Q-oVX" firstAttribute="top" secondItem="qdw-IU-51E" secondAttribute="top" id="7Ir-Pk-ReP"/>
+                            <constraint firstItem="ssy-Le-Q9e" firstAttribute="leading" secondItem="qdw-IU-51E" secondAttribute="leading" constant="16" id="81c-K4-3vU"/>
+                            <constraint firstItem="qdw-IU-51E" firstAttribute="bottom" secondItem="JGP-i7-9DT" secondAttribute="bottom" constant="20" id="AXb-H4-5d7"/>
+                            <constraint firstItem="tQM-2Q-oVX" firstAttribute="width" secondItem="nCd-p4-XAe" secondAttribute="width" id="SDR-YQ-Njk"/>
+                            <constraint firstItem="qdw-IU-51E" firstAttribute="trailing" secondItem="ssy-Le-Q9e" secondAttribute="trailing" constant="16" id="YM9-zt-8h2"/>
+                            <constraint firstItem="JGP-i7-9DT" firstAttribute="top" secondItem="ssy-Le-Q9e" secondAttribute="bottom" constant="8" id="bkd-UN-SDl"/>
+                            <constraint firstItem="JGP-i7-9DT" firstAttribute="leading" secondItem="qdw-IU-51E" secondAttribute="leading" constant="16" id="bwZ-3P-1tj"/>
+                            <constraint firstItem="nCd-p4-XAe" firstAttribute="leading" secondItem="qdw-IU-51E" secondAttribute="leading" constant="16" id="lZR-9x-2A3"/>
+                            <constraint firstItem="qdw-IU-51E" firstAttribute="trailing" secondItem="tQM-2Q-oVX" secondAttribute="trailing" constant="16" id="uqn-1C-yvv"/>
+                            <constraint firstItem="tQM-2Q-oVX" firstAttribute="leading" secondItem="nCd-p4-XAe" secondAttribute="trailing" constant="8" id="yto-f8-AYD"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="qdw-IU-51E"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="新建待办事项" id="LBO-ye-KjT">
+                        <barButtonItem key="rightBarButtonItem" title="保存" id="PxB-Wu-3p2"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="dateButton" destination="nCd-p4-XAe" id="ask-G9-QIi"/>
+                        <outlet property="notifyButton" destination="JGP-i7-9DT" id="9xi-8i-zvD"/>
+                        <outlet property="textView" destination="ssy-Le-Q9e" id="ZJf-CB-r0k"/>
+                        <outlet property="timeButton" destination="tQM-2Q-oVX" id="eiX-08-Gqx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TGJ-Oa-Jeu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-15.199999999999999" y="88.605697151424295"/>
+        </scene>
+    </scenes>
+</document>
