@@ -59,7 +59,7 @@ class InitVC: UIViewController {
     }
     
     private func config(){
-        scrollView.layer.cornerRadius = 20
+        scrollView.layer.cornerRadius = .cornerRadius
         
         menuContainerView.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
         hideMenu(true)

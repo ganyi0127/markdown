@@ -25,7 +25,7 @@ class CoredataHandler {
     
     //MARK: 加载编译后数据模型路径 momd
     private lazy var managedObjectModel: NSManagedObjectModel = {
-        let modelURL = Bundle.main.url(forResource: "FitFood", withExtension: "momd")!
+        let modelURL = Bundle.main.url(forResource: "Markdown", withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
     
@@ -33,7 +33,7 @@ class CoredataHandler {
     private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.documentDirectoryURL.appendingPathComponent("fitfoot.sqlite")
+        let url = self.documentDirectoryURL.appendingPathComponent("markdown.sqlite")
         do {
             try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
         } catch {
@@ -71,15 +71,6 @@ class CoredataHandler {
         context.persistentStoreCoordinator = persistentStoreCoordinator
     }
     
-    //MARK:- 修正日期 范围包含年月日日期
-    func translate(_ date: Date, withDayOffset offset: Int = 0) -> Date{
-        
-        let resultDate = Date(timeInterval: TimeInterval(offset) * 60 * 60 * 24, since: date)
-        
-        let components = calendar.dateComponents([.year, .month, .day], from: resultDate)
-        return calendar.date(from: components)!
-    }
-    
     // MARK:- 提交修改
     public func commit() -> Bool{
         if context.hasChanges {
@@ -97,5 +88,31 @@ class CoredataHandler {
     //MARK:- 根据objectId获取对象
     public func object(with objectId: NSManagedObjectID) -> NSManagedObject?{
         return context.object(with: objectId)
+    }
+    
+    //MARK:- *删* deleteTable by condition
+    func delete(_ tableClass: NSManagedObject.Type, byConditionFormat conditionFormat: String) {
+        
+        let request: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest()
+        
+        let entityDescription = NSEntityDescription.entity(forEntityName: "\(tableClass.self)", in: context)
+        request.entity = entityDescription
+        
+        let predicate = NSPredicate(format: conditionFormat)
+        request.predicate = predicate
+        
+        do{
+            let resultList = try context.fetch(request) as! [NSManagedObject]
+            if let last = resultList.last{
+                context.delete(last)
+                guard commit() else{
+                    return
+                }
+            }else{
+                fatalError("<Core Data> delete not exist result")
+            }
+        }catch let error{
+            fatalError("<Core Data Delete> \(tableClass) error: \(error)")
+        }
     }
 }

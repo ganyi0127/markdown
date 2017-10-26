@@ -18,4 +18,6 @@ extension UIColor{
                   blue: CGFloat(hex & 0x0000FF) / 255,
                   alpha: alpha)
     }
+    
+    static let card = UIColor(colorHex: 0xe0c8b1)
 }

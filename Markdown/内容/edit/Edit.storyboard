@@ -32,7 +32,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                 <connections>
                                     <outlet property="delegate" destination="J0Z-IK-ZCT" id="2Nt-us-hoh"/>
                                 </connections>
@@ -43,6 +43,16 @@
                                     <constraint firstAttribute="width" secondItem="JGP-i7-9DT" secondAttribute="height" multiplier="1:1" id="mvY-Vd-Ynx"/>
                                 </constraints>
                                 <state key="normal" title="notify"/>
+                                <connections>
+                                    <action selector="switchNotify:" destination="J0Z-IK-ZCT" eventType="touchUpInside" id="TOq-CY-sWI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kb-bq-9ph">
+                                <rect key="frame" x="63" y="612" width="296" height="30"/>
+                                <state key="normal" title="yyyy-MM-dd HH:mm:ss"/>
+                                <connections>
+                                    <action selector="setNotifyDate:" destination="J0Z-IK-ZCT" eventType="touchUpInside" id="S52-7a-aiQ"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -56,18 +66,27 @@
                             <constraint firstItem="qdw-IU-51E" firstAttribute="trailing" secondItem="ssy-Le-Q9e" secondAttribute="trailing" constant="16" id="YM9-zt-8h2"/>
                             <constraint firstItem="JGP-i7-9DT" firstAttribute="top" secondItem="ssy-Le-Q9e" secondAttribute="bottom" constant="8" id="bkd-UN-SDl"/>
                             <constraint firstItem="JGP-i7-9DT" firstAttribute="leading" secondItem="qdw-IU-51E" secondAttribute="leading" constant="16" id="bwZ-3P-1tj"/>
+                            <constraint firstItem="qdw-IU-51E" firstAttribute="trailing" secondItem="9kb-bq-9ph" secondAttribute="trailing" constant="16" id="cEj-Yi-Vf9"/>
+                            <constraint firstItem="9kb-bq-9ph" firstAttribute="leading" secondItem="JGP-i7-9DT" secondAttribute="trailing" constant="8" id="ge2-oW-xYI"/>
                             <constraint firstItem="nCd-p4-XAe" firstAttribute="leading" secondItem="qdw-IU-51E" secondAttribute="leading" constant="16" id="lZR-9x-2A3"/>
+                            <constraint firstItem="9kb-bq-9ph" firstAttribute="centerY" secondItem="JGP-i7-9DT" secondAttribute="centerY" id="s7D-6d-lAk"/>
                             <constraint firstItem="qdw-IU-51E" firstAttribute="trailing" secondItem="tQM-2Q-oVX" secondAttribute="trailing" constant="16" id="uqn-1C-yvv"/>
                             <constraint firstItem="tQM-2Q-oVX" firstAttribute="leading" secondItem="nCd-p4-XAe" secondAttribute="trailing" constant="8" id="yto-f8-AYD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="qdw-IU-51E"/>
                     </view>
                     <navigationItem key="navigationItem" title="新建待办事项" id="LBO-ye-KjT">
-                        <barButtonItem key="rightBarButtonItem" title="保存" id="PxB-Wu-3p2"/>
+                        <barButtonItem key="rightBarButtonItem" title="保存" id="PxB-Wu-3p2">
+                            <connections>
+                                <action selector="save:" destination="J0Z-IK-ZCT" id="wyt-yC-vuf"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="dateButton" destination="nCd-p4-XAe" id="ask-G9-QIi"/>
                         <outlet property="notifyButton" destination="JGP-i7-9DT" id="9xi-8i-zvD"/>
+                        <outlet property="notifyDateButton" destination="9kb-bq-9ph" id="CzP-mC-lg1"/>
+                        <outlet property="saveButtonItem" destination="PxB-Wu-3p2" id="cqF-vt-H3F"/>
                         <outlet property="textView" destination="ssy-Le-Q9e" id="ZJf-CB-r0k"/>
                         <outlet property="timeButton" destination="tQM-2Q-oVX" id="eiX-08-Gqx"/>
                     </connections>

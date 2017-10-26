@@ -12,7 +12,21 @@ class EditVC: UIViewController {
     @IBOutlet weak var dateButton: UIButton!            //待办事项日期
     @IBOutlet weak var timeButton: UIButton!            //待办事项时间
     @IBOutlet weak var notifyButton: UIButton!          //开启是否提醒
+    @IBOutlet weak var notifyDateButton: UIButton!      //提醒时间
+    @IBOutlet weak var saveButtonItem: UIBarButtonItem!
     
+    private var notifyDate: Date? {
+        didSet{
+            guard let date = notifyDate else {
+                notifyDateButton.setTitle("", for: .normal)
+                return
+            }
+            
+            notifyDateButton.setTitle(date.formatString(with: "yyy.M.d HH:mm"), for: .normal)
+        }
+    }
+    
+    var note: Note?
     
     //MARK:- init-------------------------
     override func viewDidLoad() {
@@ -20,15 +34,84 @@ class EditVC: UIViewController {
         createContents()
     }
     
-    private func config(){
+    override func viewWillAppear(_ animated: Bool) {
         
+        if let n = note {
+            dateButton.setTitle(n.date?.formatString(with: "yyy.M.d"), for: .normal)
+            timeButton.setTitle(n.date?.formatString(with: "HH:mm"), for: .normal)
+            textView.text = n.text ?? ""
+            saveButtonItem.title = n.isFinished ? "激活" : "保存"
+        }
+    }
+    
+    private func config(){
+        textView.text = ""
+        
+        let curDate = Date()
+        dateButton.setTitle(curDate.formatString(with: "yyy.M.d"), for: .normal)
+        timeButton.setTitle(curDate.formatString(with: "HH:mm"), for: .normal)
+        
+        notifyButton.setTitle("开启提醒", for: .normal)
+        notifyButton.setTitle("关闭提醒", for: .selected)
+        
+        notifyDate = nil
     }
     
     private func createContents(){
         
     }
+    
+    //MARK: 开关提醒
+    @IBAction func switchNotify(_ sender: UIButton) {
+        
+        notifyButton.isSelected = !notifyButton.isSelected
+    }
+    
+    //MARK: 设置提醒时间
+    @IBAction func setNotifyDate(_ sender: UIButton) {
+        showSelector(with: .date, closure: {
+            accepted, value in
+            
+            //self.swipe?.isEnabled = false
+            
+            guard accepted else{
+                return
+            }
+            
+            guard let date = value as? Date else{
+                return
+            }
+            
+            self.notifyDate = date
+        })
+    }
+    
+    //MARK: 保存当前事项
+    @IBAction func save(_ sender: UIBarButtonItem) {
+        let coredataHandler = CoredataHandler.share()
+        
+        if note == nil{
+            note = coredataHandler.insertNote()
+        }
+        
+        note?.beginDate = notifyDate
+        note?.isNotify = notifyButton.isSelected
+        note?.text = textView.text
+        guard coredataHandler.commit() else{
+            print("提交错误")
+            return
+        }
+        
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 extension EditVC: UITextViewDelegate{
-    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n"{
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
 }

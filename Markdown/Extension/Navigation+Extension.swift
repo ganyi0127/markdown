@@ -172,13 +172,13 @@ extension UINavigationController: UINavigationControllerDelegate{
     //MARK:- 转场代理实现
     public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-//        if fromVC.isKind(of: SubVC.self) || toVC.isKind(of: SubVC.self){
-//            if operation == .push{
-//                return PushTransition0()
-//            }else{
-//                return PopTransition0()
-//            }
-//        }
+        if fromVC.isKind(of: EditVC.self) || toVC.isKind(of: EditVC.self){
+            if operation == .push{
+                return PushTransition0()
+            }else{
+                return PopTransition0()
+            }
+        }
         return nil
     }
 }
