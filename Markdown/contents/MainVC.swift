@@ -224,13 +224,18 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
             cell.contentsLabel.numberOfLines = isSeleceted(withIndexPath: indexPath) ? 0 : 1
         }
         
+        let originHeight: CGFloat = .edge8 + 21 + .edge8 + 21 + .edge8
+        
         if isSeleceted(withIndexPath: indexPath){
             let text = noteList[indexPath.row].text ?? ""
             let size = CGSize(width: view_size.width - .edge16 * 2 * 2, height: view_size.height)
             let rect = NSString(string: text).boundingRect(with: size, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: UIFont.middle], context: nil)
-            return .edge8 + 21 + .edge8 + rect.height + .edge8
+            
+            let resultHeight = .edge8 + 21 + .edge8 + rect.height + .edge8
+            let finishedButtonHeight = 30 + .edge8
+            return fabs(resultHeight - originHeight) < 20 ? originHeight + finishedButtonHeight : resultHeight + finishedButtonHeight
         }
-        return .edge8 + 21 + .edge8 + 21 + .edge8
+        return originHeight
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -241,6 +246,15 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         cell.timeLabel.text = note.date?.formatString(with: "HH:mm")
         cell.contentsLabel.text = note.text
         cell.contentsLabel.numberOfLines = isSeleceted(withIndexPath: indexPath) ? 0 : 1
+        cell.finisheClosure = {
+            let note = self.noteList[indexPath.row]
+            let coredataHandler = CoredataHandler.share()
+            note.isFinished = true
+            guard coredataHandler.commit() else{
+                return
+            }
+            self.updateData()
+        }
         return cell
     }
     
@@ -250,6 +264,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         guard let isSelected = cell?.isSelected else{
             return nil
         }
+
         if isSelected{
             tableView.deselectRow(at: indexPath, animated: true)
             tableView.beginUpdates()
@@ -261,67 +276,9 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
     
     //MARK: 选中判断
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
-        guard let isSelected = cell?.isSelected else{
-            return
-        }
         
         tableView.beginUpdates()
         tableView.endUpdates()
-    }
-    
-    //MARK: 编辑
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        //删除
-        /*
-        UITableViewRowAction *deleteRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-            
-            NSLog(@"点击了删除");
-            }];
-        deleteRowAction.backgroundColor = [UIColor greenColor];
-        //置顶
-        UITableViewRowAction *topRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"置顶" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-            
-            NSLog(@"点击了删除置顶");
-            }];
-        
-        //标记为已读
-        UITableViewRowAction *readedRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"标记为已读" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-            
-            NSLog(@"点击了标记为已读");
-            }];
-        
-        if(indexPath.section == 0 && indexPath.row == 0)
-        {
-            return @[deleteRowAction];
-        }
-        else if(indexPath.section == 0 && indexPath.row == 1)
-        {
-            return @[deleteRowAction, readedRowAction];
-        }
-        else if (indexPath.section == 1 && indexPath.row == 0)
-        {
-            return @[topRowAction];
-        }
-        else
-        {
-            return @[deleteRowAction, topRowAction, readedRowAction];
-        }
-         */
-        let deleteRowAction = UITableViewRowAction(style: .destructive, title: "完成") { (action, indexPath) in
-            let note = self.noteList[indexPath.row]
-            let coredataHandler = CoredataHandler.share()
-            note.isFinished = true
-            guard coredataHandler.commit() else{
-                return
-            }
-            self.updateData()
-        }
-        return [deleteRowAction]
     }
 }
 

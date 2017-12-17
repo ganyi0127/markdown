@@ -81,9 +81,9 @@ extension MenuVC: UITableViewDelegate, UITableViewDataSource {
         if row == 0{
             //修改个人资料
             //initVC?.setInformation()
-            initVC?.hideMenu(true)
-        }else {
-            //跳转到编辑页面
+            //initVC?.hideMenu(true)            
+        }else {         //统计、历史、设置
+            //跳转
             initVC?.switchTo(withMenuItem: MenuItem.sharedItems[row - 1])
         }
     }

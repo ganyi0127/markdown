@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Mkn-xV-Rz1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Mkn-xV-Rz1">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -121,7 +121,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="gTz-XS-FOd">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" red="1" green="0.76429578990000002" blue="0.33299195770000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="115" id="Z7q-YG-VQc" customClass="MainCell" customModule="Markdown" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="115"/>
@@ -148,15 +148,24 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mT1-iu-BXu">
+                                                    <rect key="frame" x="325" y="74" width="35" height="30"/>
+                                                    <state key="normal" title="done"/>
+                                                    <connections>
+                                                        <action selector="finishNote:" destination="Z7q-YG-VQc" eventType="touchUpInside" id="xHe-mP-idE"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="8oh-tT-hk4" firstAttribute="top" secondItem="uji-ei-cQD" secondAttribute="top" constant="8" id="BeH-Jj-so1"/>
                                                 <constraint firstItem="FvK-X4-Vpf" firstAttribute="leading" secondItem="uji-ei-cQD" secondAttribute="leading" constant="32" id="J7h-65-4L2"/>
                                                 <constraint firstAttribute="trailing" secondItem="FvK-X4-Vpf" secondAttribute="trailing" constant="16" id="Lbd-UG-5wx"/>
+                                                <constraint firstAttribute="trailing" secondItem="mT1-iu-BXu" secondAttribute="trailing" constant="15" id="OGh-rH-HoW"/>
                                                 <constraint firstItem="FvK-X4-Vpf" firstAttribute="top" secondItem="8oh-tT-hk4" secondAttribute="bottom" constant="8" id="U9D-19-X8L"/>
                                                 <constraint firstItem="Jm0-8c-2Ms" firstAttribute="top" secondItem="uji-ei-cQD" secondAttribute="top" constant="8" id="a8P-1G-Jtm"/>
                                                 <constraint firstItem="Jm0-8c-2Ms" firstAttribute="width" secondItem="8oh-tT-hk4" secondAttribute="width" id="fZy-VI-ZfE"/>
                                                 <constraint firstItem="8oh-tT-hk4" firstAttribute="leading" secondItem="uji-ei-cQD" secondAttribute="leading" constant="16" id="i8J-HD-BTs"/>
+                                                <constraint firstAttribute="bottom" secondItem="mT1-iu-BXu" secondAttribute="bottom" constant="11" id="teT-bg-L3I"/>
                                                 <constraint firstItem="Jm0-8c-2Ms" firstAttribute="leading" secondItem="8oh-tT-hk4" secondAttribute="trailing" constant="8" id="wXe-pg-aol"/>
                                                 <constraint firstAttribute="trailing" secondItem="Jm0-8c-2Ms" secondAttribute="trailing" constant="16" id="zpO-Eu-gq9"/>
                                             </constraints>
@@ -164,6 +173,7 @@
                                         <connections>
                                             <outlet property="contentsLabel" destination="FvK-X4-Vpf" id="TVw-0m-XFs"/>
                                             <outlet property="dateLabel" destination="8oh-tT-hk4" id="53b-hO-rjM"/>
+                                            <outlet property="finishedButton" destination="mT1-iu-BXu" id="ZNd-29-7H3"/>
                                             <outlet property="timeLabel" destination="Jm0-8c-2Ms" id="T99-6g-eVS"/>
                                         </connections>
                                     </tableViewCell>

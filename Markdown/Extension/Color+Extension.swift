@@ -20,4 +20,5 @@ extension UIColor{
     }
     
     static let card = UIColor(colorHex: 0xe0c8b1)
+    static let cardSelected = UIColor(colorHex: 0xf5fbbf)
 }

@@ -104,19 +104,23 @@ class Selector: UIView {
             datePickerView?.addTarget(self, action: #selector(selectDate(sender:)), for: .valueChanged)
             
             if type == .birthday {
-                datePickerView?.datePickerMode = .date
-                datePickerView?.maximumDate = Date()
-                datePickerView?.minimumDate = Date(timeIntervalSinceNow: -80 * 360 * 60 * 60 * 24)     //80年前
+                datePickerView?.datePickerMode = .dateAndTime
+                datePickerView?.maximumDate = Date(timeIntervalSinceNow: 50 * 360 * 60 * 60 * 24)   //80年后
+                datePickerView?.minimumDate = Date(timeIntervalSinceNow: 60 * 5)                   //5分钟后
                 
-                var defaultDate = Date(timeInterval: -25 * 360 * 60 * 60 * 24, since: Date())
-//                if let birthday = user.birthday as Date?{
-//                    defaultDate = birthday
-//                }
+                let defaultDate = Date(timeIntervalSinceNow: 60 * 5)
                 datePickerView?.date = defaultDate
                 value = defaultDate
                 datePickerView?.setDate(defaultDate, animated: true)
             }else if type == .date{
-                datePickerView?.datePickerMode = .date
+                datePickerView?.datePickerMode = .dateAndTime
+                datePickerView?.maximumDate = Date(timeIntervalSinceNow: 50 * 360 * 60 * 60 * 24)   //80年后
+                datePickerView?.minimumDate = Date(timeIntervalSinceNow: 60 * 5)                   //5分钟后
+                
+                let defaultDate = Date(timeIntervalSinceNow: 60 * 5)
+                datePickerView?.date = defaultDate
+                value = defaultDate
+                datePickerView?.setDate(defaultDate, animated: true)
             }
             addSubview(datePickerView!)
         default:

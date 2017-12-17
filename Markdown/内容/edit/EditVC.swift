@@ -8,17 +8,19 @@
 
 import Foundation
 class EditVC: UIViewController {
+    @IBOutlet weak var contentView: UIView!             //待办事项底图
     @IBOutlet weak var textView: UITextView!            //待办事项内容
     @IBOutlet weak var dateButton: UIButton!            //待办事项日期
     @IBOutlet weak var timeButton: UIButton!            //待办事项时间
     @IBOutlet weak var notifyButton: UIButton!          //开启是否提醒
     @IBOutlet weak var notifyDateButton: UIButton!      //提醒时间
     @IBOutlet weak var saveButtonItem: UIBarButtonItem!
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     
     private var notifyDate: Date? {
         didSet{
             guard let date = notifyDate else {
-                notifyDateButton.setTitle("", for: .normal)
+                notifyDateButton.setTitle("未设置提醒时间", for: .normal)
                 return
             }
             
@@ -26,6 +28,7 @@ class EditVC: UIViewController {
         }
     }
     
+    ///数据模型
     var note: Note?
     
     //MARK:- init-------------------------
@@ -61,18 +64,27 @@ class EditVC: UIViewController {
         
     }
     
+    //MARK:- 更新布局
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()    
+    }
+    
+    override func viewDidLayoutSubviews() {
+        contentView.setRadius(withTop: true, withBottom: true)
+    }
+    
     //MARK: 开关提醒
     @IBAction func switchNotify(_ sender: UIButton) {
         
         notifyButton.isSelected = !notifyButton.isSelected
+        
     }
     
     //MARK: 设置提醒时间
     @IBAction func setNotifyDate(_ sender: UIButton) {
+        textView.endEditing(true)
         showSelector(with: .date, closure: {
             accepted, value in
-            
-            //self.swipe?.isEnabled = false
             
             guard accepted else{
                 return
@@ -107,6 +119,20 @@ class EditVC: UIViewController {
 }
 
 extension EditVC: UITextViewDelegate{
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        textViewHeightConstraint.constant = view_size.height - .edge8 - 30 - .edge8 * 2 - 30 - .edge8 - 256 - 64
+        contentView.setNeedsLayout()
+        
+        hiddenSelector()
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+
+        textViewHeightConstraint.constant = 88
+        contentView.setNeedsLayout()
+    }
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n"{
             textView.resignFirstResponder()
