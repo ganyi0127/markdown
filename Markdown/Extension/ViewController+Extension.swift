@@ -13,7 +13,7 @@ var notifView: UIView?
 extension UIViewController{
     open override func awakeFromNib() {
         
-        view.layer.cornerRadius = 20
+        view.layer.cornerRadius = .cornerRadius
         
         guard let firstMethod = class_getInstanceMethod(self.classForCoder,#selector(didReceiveMemoryWarning)), let secondMethod = class_getInstanceMethod(self.classForCoder,#selector(didReceiveCurrentWarning)) else{
                 return
@@ -47,7 +47,7 @@ extension UIViewController{
     }
     
     //MARK:- 顶部提示
-    func showNotif(withTitle title: String, duration: TimeInterval, closure: (()->())?){
+    func notif(withTitle title: String, duration: TimeInterval = 3, closure: (()->())? = nil){
         if notifView != nil{
             notifList.append((title: title, duration: duration, closure: closure))
         }else{
@@ -74,8 +74,8 @@ extension UIViewController{
             let labelFrame = CGRect(x: 0, y: 20, width: notifView!.frame.width, height: notifView!.frame.height - 20)
             let label = UILabel(frame: labelFrame)
             label.textAlignment = .center
-            label.textColor = word_default_color
-            label.font = font_middle
+            label.font = .middle
+            label.textColor = .black
             label.text = title
             notifView?.addSubview(label)
             
@@ -118,7 +118,7 @@ extension UIViewController{
         }
         
         notifList.removeFirst()
-        showNotif(withTitle: firstNotif.title, duration: firstNotif.duration, closure: firstNotif.closure)
+        notif(withTitle: firstNotif.title, duration: firstNotif.duration, closure: firstNotif.closure)
     }
     
     private func showNotifView(){

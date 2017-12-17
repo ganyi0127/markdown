@@ -11,12 +11,38 @@ class MainCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var contentsLabel: UILabel!
-    @IBOutlet weak var finishedButton: UIButton!
+    @IBOutlet weak var finishedButton: UIButton!            //完成
+    @IBOutlet weak var resetButton: UIButton!
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var remindButton: UIButton!
+    
+    var finisheClosure: ((Bool)->())?
+    var remindClosure: ((Bool)->())?
+    var editClosure: (()->())?
     
     
-    var finisheClosure: (()->())?
-    var notifClosure: ((Bool)->())?
-    
+    //数据
+    var note: Note?{
+        didSet{
+            guard let n = note else {
+                return
+            }
+            //判断时间是否已过
+            var isPast = false
+            if let beginDate = n.beginDate{
+                let result = beginDate.compare(Date())
+                if case result = ComparisonResult.orderedAscending{
+                    isPast = true
+                }
+            }
+            let textColor: UIColor = isPast ? .red : .white
+            dateLabel.text = n.beginDate?.formatString(with: "yyy.M.d")
+            dateLabel.textColor = textColor
+            timeLabel.text = n.beginDate?.formatString(with: "HH:mm")
+            timeLabel.textColor = textColor
+            contentsLabel.text = n.text
+        }
+    }
     
     //MARK:- init------------------------------------------------------------
     override func didMoveToSuperview() {
@@ -26,7 +52,7 @@ class MainCell: UITableViewCell {
         
     }
     override func draw(_ rect: CGRect) {
-        setRadius(withTop: true, withBottom: true)
+        super.draw(rect)
         
     }
     
@@ -35,26 +61,41 @@ class MainCell: UITableViewCell {
         timeLabel.font = .small
         contentsLabel.font = .middle
         
-        dateLabel.textColor = .white
-        timeLabel.textColor = .white
         contentsLabel.textColor = .gray
-        
-        backgroundColor = .white
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        UIView.animate(withDuration: 0.5) {
-            self.backgroundColor = self.isSelected ? .cardSelected : .card
-            if self.finishedButton != nil{                
-                self.finishedButton.isHidden = !self.isSelected
-            }
+        
+        update()
+    }
+    
+    //MARK: 更新
+    private func update(){
+        backgroundColor = isSelected ? .cardSelected : .card
+        if finishedButton != nil{
+            finishedButton.isHidden = !isSelected
+        }
+        if resetButton != nil{
+            resetButton.isHidden = !isSelected
+        }
+        if editButton != nil{
+            editButton.isHidden = !isSelected
+        }
+        if remindButton != nil{
+            remindButton.isHidden = !isSelected
         }
     }
     
     //MARK:- 完成事项
     @IBAction func finishNote(_ sender: UIButton) {
-        finisheClosure?()
+        finisheClosure?(sender == finishedButton)
+    }
+    @IBAction func remindNote(_ sender: UIButton) {
+        remindClosure?(sender.isSelected)
+    }
+    @IBAction func editNote(_ sender: UIButton) {
+        editClosure?()
     }
 }

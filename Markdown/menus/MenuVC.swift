@@ -65,11 +65,11 @@ extension MenuVC: UITableViewDelegate, UITableViewDataSource {
             let menuItem = MenuItem.sharedItems[indexPath.row - 1]
             
             cell.label.text = menuItem.title
-            cell.label.font = font_big
             
             cell.contentView.backgroundColor = menuItem.color
         }
         
+        cell.setMenuRadius()
         return cell
     }
     

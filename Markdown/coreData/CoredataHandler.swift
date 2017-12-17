@@ -72,6 +72,7 @@ class CoredataHandler {
     }
     
     // MARK:- 提交修改
+    @discardableResult
     public func commit() -> Bool{
         if context.hasChanges {
             do {

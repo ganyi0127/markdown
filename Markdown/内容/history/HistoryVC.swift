@@ -37,7 +37,30 @@ class HistoryVC: UIViewController {
         
         let coredataHandler = CoredataHandler.share()
         let finishedNotes = coredataHandler.selectNotes(withFetchType: .finished)
-        noteList = finishedNotes
+        noteList = finishedNotes.sorted(by: { (note0, note1) -> Bool in
+            if let beginDate0 = note0.beginDate, let beginDate1 = note1.beginDate{
+                let result = beginDate0.compare(beginDate1)
+                if case result = ComparisonResult.orderedAscending{
+                    return true
+                }else{
+                    return false
+                }
+            }else if note0.beginDate != nil{
+                return true
+            }else if note1.beginDate != nil{
+                return false
+            }else{
+                let date0 = note0.date!
+                let date1 = note1.date!
+                let result = date0.compare(date1)
+                switch result{
+                case .orderedAscending:
+                    return true
+                default:
+                    return false
+                }
+            }
+        })
         tableView.reloadData()
     }
     
@@ -111,6 +134,16 @@ extension HistoryVC: UITableViewDelegate, UITableViewDataSource{
         cell.timeLabel.text = note.date?.formatString(with: "HH:mm")
         cell.contentsLabel.text = note.text
         cell.contentsLabel.numberOfLines = isSeleceted(withIndexPath: indexPath) ? 0 : 1
+        cell.finisheClosure = {
+            finished in
+            let note = self.noteList[indexPath.row]
+            let coredataHandler = CoredataHandler.share()
+            note.isFinished = finished            
+            guard coredataHandler.commit() else{
+                return
+            }
+            self.updateData()
+        }
         return cell
     }
     

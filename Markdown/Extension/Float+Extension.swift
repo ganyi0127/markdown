@@ -10,5 +10,5 @@ import Foundation
 extension CGFloat{
     static let edge8: CGFloat = 8
     static let edge16: CGFloat = 16
-    static let cornerRadius: CGFloat = 16
+    static let cornerRadius: CGFloat = 8
 }

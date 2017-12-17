@@ -12,6 +12,13 @@ class MenuCell: UITableViewCell {
     
     
     override func didMoveToSuperview() {
+        super.didMoveToSuperview()
         
+        config()
+    }
+    
+    private func config(){
+        label.textColor = .black
+        label.font = .big
     }
 }

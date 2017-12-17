@@ -53,6 +53,7 @@ class InitVC: UIViewController {
         
         if segue.identifier == "menu"{
             menuVC = navigation.topViewController as? MenuVC
+            
         }else if segue.identifier == "main"{
             mainVC = navigation.topViewController as? MainVC
         }
@@ -68,7 +69,7 @@ class InitVC: UIViewController {
     }
     
     private func createContents(){
-        
+
         scrollView.addSubview(effectView)
     }
     
@@ -98,8 +99,7 @@ extension InitVC: UIScrollViewDelegate{
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        let multipier = 1 / menuContainerView.bounds.width
-        progress = 1 - (scrollView.contentOffset.x) * multipier
+        progress = 1 - (scrollView.contentOffset.x) / (menuContainerView.bounds.width)
         effectView.alpha = progress!
         menuContainerView.layer.transform = menuTransformForPercent(progress!)
         menuContainerView.alpha = progress!

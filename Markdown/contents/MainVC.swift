@@ -122,9 +122,8 @@ class MainVC: UIViewController {
         return effectView
     }()
     
-    //MARK:- 数据
-    private var noteList = [Note]()
-    
+    //MARK:- 数据------------------------------------------------------------------------------------------------
+    private var noteTypeList = [NoteType]()
     
     //MARK:- init ***************************************************************
     override func viewDidLoad() {
@@ -135,7 +134,7 @@ class MainVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         //刷新。。。
-        
+        updateData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -149,7 +148,7 @@ class MainVC: UIViewController {
         
         let coredataHandler = CoredataHandler.share()
         let unFinishedNotes = coredataHandler.selectNotes(withFetchType: .unFinished)
-        noteList = unFinishedNotes
+        noteTypeList = sortAndEnumNotesByDate(withOriginNotes: unFinishedNotes)
         tableView.reloadData()
     }
     
@@ -159,7 +158,6 @@ class MainVC: UIViewController {
         mainButton.layer.zPosition = 5
         navigationItem.title = "待办事项"
         mainButton.layer.cornerRadius = mainButton.frame.width / 2
-        
     }
     
     private func createContents(){
@@ -182,15 +180,18 @@ class MainVC: UIViewController {
         menuItem = MenuItem.sharedItems[tag]
     }
     
-    //MARK:- 点击展开记录列表main button
+    //MARK:- 点击添加main button
     @IBAction func showRecord(_ sender: Any) {
-        //isMainButtonOpen = !isMainButtonOpen
-        
+        edit(withNote: nil)
+    }
+    
+    //MARK:- 跳转到编辑页
+    fileprivate func edit(withNote note: Note?){
         //跳转到编辑页
-        
         guard let editVC = UIStoryboard(name: "Edit", bundle: Bundle.main).instantiateInitialViewController() as? EditVC else {
             return
         }
+        editVC.note = note
         navigationController?.show(editVC, sender: nil)
     }
     
@@ -202,13 +203,38 @@ class MainVC: UIViewController {
 //MARK:- tableview delegate
 extension MainVC: UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return noteTypeList.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return noteList.count
+        let noteType = noteTypeList[section]
+        switch noteType {
+        case .past(let futureList):
+            return futureList.count
+        case .today(let todayList):
+            return todayList.count
+        case .future(let pastList):
+            return pastList.count
+        }
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let noteType = noteTypeList[section]
+        
+        let text = noteType.name()
+        let count = noteType.list().count
+        
+        let labelFrame = CGRect(x: 0, y: 0, width: view_size.width, height: 44)
+        let label = UILabel(frame: labelFrame)
+        label.text = text + "\(count)"
+        label.textAlignment = .center
+        label.textColor = .subWord
+        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        label.setHeaderLabelRadius()
+        return label
+    }
+    
+    //MARK:- 判断当前cell是否被选中
     func isSeleceted(withIndexPath indexPath: IndexPath) -> Bool{
         guard let selectedIndex = tableView.indexPathForSelectedRow else{
             return false
@@ -220,6 +246,12 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         return 44   //navigation正常高度
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = indexPath.section
+        let row = indexPath.row
+        let noteType = noteTypeList[section]
+        
+        let noteList = noteType.list()
+        
         if let cell = tableView.cellForRow(at: indexPath) as? MainCell{
             cell.contentsLabel.numberOfLines = isSeleceted(withIndexPath: indexPath) ? 0 : 1
         }
@@ -227,7 +259,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         let originHeight: CGFloat = .edge8 + 21 + .edge8 + 21 + .edge8
         
         if isSeleceted(withIndexPath: indexPath){
-            let text = noteList[indexPath.row].text ?? ""
+            let text = noteList[row].text ?? ""
             let size = CGSize(width: view_size.width - .edge16 * 2 * 2, height: view_size.height)
             let rect = NSString(string: text).boundingRect(with: size, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: UIFont.middle], context: nil)
             
@@ -239,22 +271,45 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let section = indexPath.section
+        let row = indexPath.row
+        let noteType = noteTypeList[section]
+        let noteList = noteType.list()
+        
         let identifier = "cell"
-        let note = noteList[indexPath.row]
+        let note = noteList[row]
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as! MainCell
-        cell.dateLabel.text = note.date?.formatString(with: "yyy.M.d")
-        cell.timeLabel.text = note.date?.formatString(with: "HH:mm")
-        cell.contentsLabel.text = note.text
+        cell.note = note
+        
         cell.contentsLabel.numberOfLines = isSeleceted(withIndexPath: indexPath) ? 0 : 1
+        //完成回调
         cell.finisheClosure = {
-            let note = self.noteList[indexPath.row]
+            finished in
             let coredataHandler = CoredataHandler.share()
-            note.isFinished = true
+            note.isFinished = finished
             guard coredataHandler.commit() else{
                 return
             }
             self.updateData()
         }
+        //提醒设置回调
+        cell.remindClosure = {
+            remindFlag in
+        }
+        //编辑回调
+        cell.editClosure = {
+            self.edit(withNote: note)
+        }
+        
+        //绘制圆角计算
+        var isTopRadius = false
+        var isBottomRadius = false
+        if row == 0 {
+            isTopRadius = true
+        }else if row == noteList.count - 1{
+            isBottomRadius = true
+        }
+        cell.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
         return cell
     }
     
@@ -271,14 +326,54 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
             tableView.endUpdates()
             return nil
         }
+
         return indexPath
     }
     
     //MARK: 选中判断
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let row = indexPath.row
+        let noteType = noteTypeList[section]
+        let noteList = noteType.list()
+        let cell = tableView.cellForRow(at: indexPath)
         
         tableView.beginUpdates()
         tableView.endUpdates()
+        
+
+        //绘制圆角计算
+        var isTopRadius = false
+        var isBottomRadius = false
+        if row == 0 {
+            isTopRadius = true
+        }else if row == noteList.count - 1{
+            isBottomRadius = true
+        }
+        cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
+    }
+    
+    //取消选中后，处理单个圆角
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let row = indexPath.row
+        let noteType = noteTypeList[section]
+        let noteList = noteType.list()
+        let cell = tableView.cellForRow(at: indexPath)
+        
+        tableView.beginUpdates()
+        tableView.endUpdates()
+        
+        
+        //绘制圆角计算
+        var isTopRadius = false
+        var isBottomRadius = false
+        if row == 0 {
+            isTopRadius = true
+        }else if row == noteList.count - 1{
+            isBottomRadius = true
+        }
+        cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
     }
 }
 

@@ -17,7 +17,7 @@ extension UINavigationController: UINavigationControllerDelegate{
         }
         
         //设置title
-        navigationBar.titleTextAttributes = [NSAttributedStringKey.font: font_middle,
+        navigationBar.titleTextAttributes = [NSAttributedStringKey.font: UIFont.middle,
                                              NSAttributedStringKey.foregroundColor: UIColor(red: 42 / 255, green: 42 / 255, blue: 42 / 255, alpha: 1)]
         navigationBar.topItem?.title = ""           //设置返回文字为空
         navigationBar.backgroundColor = .orange     //设置背景颜色

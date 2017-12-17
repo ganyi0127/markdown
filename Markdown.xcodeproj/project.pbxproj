@@ -15,6 +15,9 @@
 		320665D61F9F739900B42859 /* Selector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320665D51F9F739900B42859 /* Selector.swift */; };
 		320665D81F9F745900B42859 /* ViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320665D71F9F745900B42859 /* ViewController+Extension.swift */; };
 		320665DA1F9F764900B42859 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320665D91F9F764900B42859 /* Timer.swift */; };
+		321BE94C1FE6500D008DC530 /* TableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321BE94B1FE6500D008DC530 /* TableViewCell+Extension.swift */; };
+		321BE94E1FE67A10008DC530 /* NoteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321BE94D1FE67A10008DC530 /* NoteManager.swift */; };
+		321BE9501FE68583008DC530 /* Label+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321BE94F1FE68583008DC530 /* Label+Extension.swift */; };
 		323D34E61F9EF737002FC52F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323D34E51F9EF737002FC52F /* AppDelegate.swift */; };
 		323D34E81F9EF737002FC52F /* Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 323D34E71F9EF737002FC52F /* Header.h */; };
 		323D34EB1F9EF737002FC52F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 323D34E91F9EF737002FC52F /* Main.storyboard */; };
@@ -73,6 +76,9 @@
 		320665D51F9F739900B42859 /* Selector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selector.swift; sourceTree = "<group>"; };
 		320665D71F9F745900B42859 /* ViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extension.swift"; sourceTree = "<group>"; };
 		320665D91F9F764900B42859 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		321BE94B1FE6500D008DC530 /* TableViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableViewCell+Extension.swift"; sourceTree = "<group>"; };
+		321BE94D1FE67A10008DC530 /* NoteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteManager.swift; sourceTree = "<group>"; };
+		321BE94F1FE68583008DC530 /* Label+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label+Extension.swift"; sourceTree = "<group>"; };
 		323D34E21F9EF737002FC52F /* Markdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Markdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		323D34E51F9EF737002FC52F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		323D34E71F9EF737002FC52F /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Header.h; path = SupportingFiles/Header.h; sourceTree = "<group>"; };
@@ -221,6 +227,8 @@
 				323D35401F9F1155002FC52F /* Image+Extension.swift */,
 				320665C81F9F6CE600B42859 /* Date+Extension.swift */,
 				320665CA1F9F6F1400B42859 /* View+Extension.swift */,
+				321BE94F1FE68583008DC530 /* Label+Extension.swift */,
+				321BE94B1FE6500D008DC530 /* TableViewCell+Extension.swift */,
 				320665D31F9F706B00B42859 /* Float+Extension.swift */,
 				320665D71F9F745900B42859 /* ViewController+Extension.swift */,
 				320665D91F9F764900B42859 /* Timer.swift */,
@@ -242,6 +250,7 @@
 		323D35251F9F0BBC002FC52F /* 内容 */ = {
 			isa = PBXGroup;
 			children = (
+				321BE94D1FE67A10008DC530 /* NoteManager.swift */,
 				323D35291F9F0BF3002FC52F /* MainVC.swift */,
 				32DACADA1FA0C5D400D370C5 /* MainCell.swift */,
 				323D35321F9F0FAA002FC52F /* mainButton */,
@@ -451,6 +460,7 @@
 				320665D61F9F739900B42859 /* Selector.swift in Sources */,
 				320665CE1F9F6F7B00B42859 /* PopTransition0.swift in Sources */,
 				320665CB1F9F6F1400B42859 /* View+Extension.swift in Sources */,
+				321BE94E1FE67A10008DC530 /* NoteManager.swift in Sources */,
 				323D353C1F9F108A002FC52F /* Navigation+Extension.swift in Sources */,
 				323D35361F9F100E002FC52F /* InitVC.swift in Sources */,
 				320665D41F9F706B00B42859 /* Float+Extension.swift in Sources */,
@@ -461,6 +471,7 @@
 				323D353F1F9F10EE002FC52F /* CoredataHandler.swift in Sources */,
 				323D35381F9F102C002FC52F /* Configure.swift in Sources */,
 				32DACADD1FA1A44F00D370C5 /* Font+Extension.swift in Sources */,
+				321BE94C1FE6500D008DC530 /* TableViewCell+Extension.swift in Sources */,
 				323D354C1F9F2E7C002FC52F /* HistoryVC.swift in Sources */,
 				32D7172D1F9F36350065A3AB /* EditVC.swift in Sources */,
 				323D35411F9F1155002FC52F /* Image+Extension.swift in Sources */,
@@ -468,6 +479,7 @@
 				323D352D1F9F0F0C002FC52F /* MenuVC.swift in Sources */,
 				320665D81F9F745900B42859 /* ViewController+Extension.swift in Sources */,
 				323D352F1F9F0F14002FC52F /* MenuItem.swift in Sources */,
+				321BE9501FE68583008DC530 /* Label+Extension.swift in Sources */,
 				323D34E81F9EF737002FC52F /* Header.h in Sources */,
 				32DACADB1FA0C5D400D370C5 /* MainCell.swift in Sources */,
 				323D34E61F9EF737002FC52F /* AppDelegate.swift in Sources */,

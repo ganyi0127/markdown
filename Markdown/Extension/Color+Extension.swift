@@ -18,7 +18,8 @@ extension UIColor{
                   blue: CGFloat(hex & 0x0000FF) / 255,
                   alpha: alpha)
     }
-    
+    static let word = UIColor(red: 50 / 255, green: 50 / 255, blue: 50 / 255, alpha: 1)
+    static let subWord = UIColor(red: 100 / 255, green: 100 / 255, blue: 100 / 255, alpha: 1)
     static let card = UIColor(colorHex: 0xe0c8b1)
     static let cardSelected = UIColor(colorHex: 0xf5fbbf)
 }

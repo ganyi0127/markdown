@@ -17,16 +17,12 @@ let view_size = UIScreen.main.bounds.size
 //navigation高度
 var naviagtion_height: CGFloat?
 
-//通用字体、颜色
-let font_name = "PingFangTC-Medium"
-let font_tiny = UIFont(name: font_name, size: 9)!
-let font_small = UIFont(name: font_name, size: 12)!
-let font_middle = UIFont(name: font_name, size: 17)!
-let font_big = UIFont(name: font_name, size: 24)!
-let font_huge = UIFont(name: font_name, size: 44)!
 
 //userDefaults
 let userDefaults = UserDefaults.standard
+
+//日历
+let calendar = Calendar.current
 
 //当前选择的日期
 var selectDate = Date()
@@ -34,13 +30,6 @@ var preToday = Date()
 
 //文件管理
 let fileManager = FileManager.default
-
-//文字颜色
-let word_white_color = UIColor.white
-let word_light_color = UIColor(colorHex: 0xd9d9d9)                                          //高亮文字颜色
-let word_gray_color = UIColor(red: 100 / 255, green: 100 / 255, blue: 100 / 255, alpha: 1)  //灰文字颜色颜色
-let word_default_color = UIColor(red: 50 / 255, green: 50 / 255, blue: 50 / 255, alpha: 1)  //文字颜色
-let word_editing_color = UIColor.green                                                      //编辑文字
 
 //MARK:- 正则表达式
 struct Regex {

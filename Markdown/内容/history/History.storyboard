@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RHe-xF-v5w">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RHe-xF-v5w">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -42,20 +42,29 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fDc-Nq-AGb">
-                                                    <rect key="frame" x="32" y="37" width="327" height="20.5"/>
+                                                    <rect key="frame" x="16" y="37" width="343" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4b-ap-7g1">
+                                                    <rect key="frame" x="328" y="74" width="31" height="30"/>
+                                                    <state key="normal" title="重置"/>
+                                                    <connections>
+                                                        <action selector="finishNote:" destination="eBg-tE-2Ib" eventType="touchUpInside" id="yk1-ic-X3E"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="ZEm-Ft-mTa" firstAttribute="leading" secondItem="ZBv-5C-P5n" secondAttribute="leading" constant="16" id="0J8-KT-h5U"/>
                                                 <constraint firstItem="WoA-Oz-rV7" firstAttribute="leading" secondItem="ZEm-Ft-mTa" secondAttribute="trailing" constant="8" id="4sr-7X-bV3"/>
                                                 <constraint firstAttribute="trailing" secondItem="fDc-Nq-AGb" secondAttribute="trailing" constant="16" id="HPL-6f-eon"/>
+                                                <constraint firstAttribute="bottom" secondItem="L4b-ap-7g1" secondAttribute="bottom" constant="11" id="LJy-DL-lxL"/>
                                                 <constraint firstItem="WoA-Oz-rV7" firstAttribute="top" secondItem="ZBv-5C-P5n" secondAttribute="top" constant="8" id="P9B-6L-F8y"/>
                                                 <constraint firstItem="fDc-Nq-AGb" firstAttribute="top" secondItem="ZEm-Ft-mTa" secondAttribute="bottom" constant="8" id="Shq-o4-QRP"/>
                                                 <constraint firstAttribute="trailing" secondItem="WoA-Oz-rV7" secondAttribute="trailing" constant="16" id="WYm-1x-YCT"/>
-                                                <constraint firstItem="fDc-Nq-AGb" firstAttribute="leading" secondItem="ZBv-5C-P5n" secondAttribute="leading" constant="32" id="arJ-P5-oIl"/>
+                                                <constraint firstAttribute="trailing" secondItem="L4b-ap-7g1" secondAttribute="trailing" constant="16" id="alU-XX-4A5"/>
+                                                <constraint firstItem="fDc-Nq-AGb" firstAttribute="leading" secondItem="ZBv-5C-P5n" secondAttribute="leading" constant="16" id="arJ-P5-oIl"/>
                                                 <constraint firstItem="ZEm-Ft-mTa" firstAttribute="top" secondItem="ZBv-5C-P5n" secondAttribute="top" constant="8" id="d5a-nq-jeC"/>
                                                 <constraint firstItem="WoA-Oz-rV7" firstAttribute="width" secondItem="ZEm-Ft-mTa" secondAttribute="width" id="h7n-1e-Sam"/>
                                             </constraints>
@@ -63,6 +72,7 @@
                                         <connections>
                                             <outlet property="contentsLabel" destination="fDc-Nq-AGb" id="1ST-Bm-ZJZ"/>
                                             <outlet property="dateLabel" destination="ZEm-Ft-mTa" id="c4Y-hw-hkw"/>
+                                            <outlet property="resetButton" destination="L4b-ap-7g1" id="xMN-yS-3A6"/>
                                             <outlet property="timeLabel" destination="WoA-Oz-rV7" id="KZJ-hw-wT4"/>
                                         </connections>
                                     </tableViewCell>
