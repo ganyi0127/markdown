@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class MenuCell: UITableViewCell {
+class MenuCell0: UITableViewCell {
     @IBOutlet weak var label: UILabel!
     
     
@@ -18,7 +18,24 @@ class MenuCell: UITableViewCell {
     }
     
     private func config(){
-        label.textColor = .black
-        label.font = .big
+        label.textColor = .word
+        label.font = .tiny
+    }
+}
+
+class MenuCell1: UITableViewCell {
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var label: UILabel!
+    
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+        config()
+    }
+    
+    private func config(){
+        label.textColor = .white
+        label.font = .small
     }
 }

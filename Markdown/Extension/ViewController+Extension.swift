@@ -13,12 +13,22 @@ var notifView: UIView?
 extension UIViewController{
     open override func awakeFromNib() {
         
+        //自定义navigationBar
+        let newBackItem = UIBarButtonItem(image: #imageLiteral(resourceName: "back"), style: .plain, target: self, action: #selector(back))
+        navigationItem.leftBarButtonItem = newBackItem
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        
         view.layer.cornerRadius = .cornerRadius
         
         guard let firstMethod = class_getInstanceMethod(self.classForCoder,#selector(didReceiveMemoryWarning)), let secondMethod = class_getInstanceMethod(self.classForCoder,#selector(didReceiveCurrentWarning)) else{
                 return
         }
         method_exchangeImplementations(firstMethod, secondMethod)
+    }
+    
+    @objc func back(){
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func didReceiveCurrentWarning(){
@@ -30,11 +40,11 @@ extension UIViewController{
     }
     
     //MARK:-选择器
-    func showSelector(with selectorType: SelectorType, closure: ((_ accepted: Bool, _ value: Any?)->())?){
+    func showSelector(with selectorType: SelectorType, defaultValue: Any? = nil, closure: ((_ accepted: Bool, _ value: Any?)->())?){
         
         let selector = Selector.default
         
-        selector.show(with: selectorType, closure: closure)
+        selector.show(with: selectorType, defaultValue: defaultValue, closure: closure)
         view.addSubview(selector)
     }
     
@@ -63,7 +73,7 @@ extension UIViewController{
             gradient.startPoint = CGPoint(x: 0, y: 0)
             gradient.endPoint = CGPoint(x: 0, y: 1)
             gradient.colors = [UIColor.white.cgColor, UIColor.white.cgColor]
-            gradient.cornerRadius = 20
+            gradient.cornerRadius = .cornerRadius
             gradient.shadowColor = UIColor.black.cgColor
             gradient.shadowOffset = .zero
             gradient.shadowOpacity = 0.5

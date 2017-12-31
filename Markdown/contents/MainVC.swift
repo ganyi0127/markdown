@@ -69,49 +69,6 @@ class MainVC: UIViewController {
         return list
     }()
     
-    /*
-    //MARK:主按钮状态
-    private var isMainButtonOpen = false{
-        didSet{
-            
-            mainButton.isSelected = isMainButtonOpen
-            
-            //移除之前动画
-            let key = "rotation"
-            mainButton.layer.removeAnimation(forKey: key)
-            
-            //创建按钮动画
-            let animation = CABasicAnimation(keyPath: "transform.rotation.z")
-            if isMainButtonOpen {
-                animation.fromValue = 0
-                animation.toValue = Double.pi / 4 + .pi
-            }else{
-                animation.fromValue = Double.pi / 4 + .pi
-                animation.toValue = 0
-            }
-            animation.duration = 0.2
-            animation.repeatCount = 1
-            animation.isRemovedOnCompletion = false
-            animation.fillMode = kCAFillModeBoth
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-            mainButton.layer.add(animation, forKey: key)
-            
-            //子按钮操作
-            self.subButtonList?.forEach{
-                button in
-                button.setHidden(flag: !isMainButtonOpen)
-            }
-            
-            //动画
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
-                self.effectView.isHidden = !self.isMainButtonOpen
-            }, completion: {
-                complete in
-            })
-        }
-    }
-    */
-    
     //毛玻璃
     fileprivate lazy var effectView = { () -> UIVisualEffectView in
         let blur: UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
@@ -119,8 +76,12 @@ class MainVC: UIViewController {
         effectView.layer.zPosition = 4
         effectView.frame = self.view.bounds
         effectView.isHidden = true
+    
         return effectView
     }()
+    
+    
+    fileprivate var isPastNoteOpen = false
     
     //MARK:- 数据------------------------------------------------------------------------------------------------
     private var noteTypeList = [NoteType]()
@@ -158,6 +119,13 @@ class MainVC: UIViewController {
         mainButton.layer.zPosition = 5
         navigationItem.title = "待办事项"
         mainButton.layer.cornerRadius = mainButton.frame.width / 2
+        
+        tableView.backgroundColor = .background
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.alwaysBounceVertical = true
+        
+        //解决重复刷新高度产生错误的bug
+        tableView.estimatedRowHeight = .edge8 + 21 + .edge8 + 21 + .edge8
     }
     
     private func createContents(){
@@ -209,12 +177,12 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let noteType = noteTypeList[section]
         switch noteType {
-        case .past(let futureList):
-            return futureList.count
+        case .past(let pastList):
+            return isPastNoteOpen ? pastList.count : 0
         case .today(let todayList):
             return todayList.count
-        case .future(let pastList):
-            return pastList.count
+        case .future(let futureList):
+            return futureList.count
         }
     }
     
@@ -223,15 +191,71 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         
         let text = noteType.name()
         let count = noteType.list().count
+        let buttonSize = #imageLiteral(resourceName: "header_selected").size
         
-        let labelFrame = CGRect(x: 0, y: 0, width: view_size.width, height: 44)
-        let label = UILabel(frame: labelFrame)
-        label.text = text + "\(count)"
-        label.textAlignment = .center
-        label.textColor = .subWord
-        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-        label.setHeaderLabelRadius()
-        return label
+        let header = UIView()
+        let button = UIButton()//UIButton(frame: buttonFrame)
+        switch noteType {
+        case .past(let pastNoteList):
+            header.frame = CGRect(x: 0, y: 0, width: view_size.width, height: 44 + 64)
+            let buttonFrame = CGRect(x: (view_size.width - buttonSize.width) / 2, y: 64 + (44 - buttonSize.height) / 2, width: buttonSize.width, height: buttonSize.height)
+            button.frame = buttonFrame
+            button.setTitle("查看未处理(\(pastNoteList.count))", for: .selected)
+            button.setTitle("查看未处理", for: .normal)
+            button.addTarget(self, action: #selector(check(_:)), for: .touchUpInside)
+            button.isSelected = !isPastNoteOpen
+        default:
+            let buttonFrame = CGRect(x: (view_size.width - buttonSize.width) / 2, y: (44 - buttonSize.height) / 2, width: buttonSize.width, height: buttonSize.height)
+            header.frame = buttonFrame
+            button.frame = buttonFrame
+            button.setTitle(text, for: .normal)
+        }
+        button.setTitleColor(.white, for: .selected)
+        button.setTitleColor(.sub, for: .normal)
+        button.setBackgroundImage(#imageLiteral(resourceName: "header_normal"), for: .normal)
+        button.setBackgroundImage(#imageLiteral(resourceName: "header_selected"), for: .selected)
+        //button.setTitleColor(.subWord, for: .normal)
+        //        button.setHeaderLabelRadius()
+        header.addSubview(button)
+        return header
+    }
+    
+    //MARK:- 点击查看
+    @objc func check(_ sender: UIButton){
+        isPastNoteOpen = sender.isSelected
+        sender.isSelected = !sender.isSelected
+
+        let pastNoteList = noteTypeList.filter { (noteType) -> Bool in
+            if case NoteType.past(_) = noteType{
+                return true
+            }
+            return false
+        }
+        
+        //判断是否有过去日志
+        guard !pastNoteList.isEmpty else {
+            return
+        }
+        
+        //取消选中项
+        if let selectIndexPath = tableView.indexPathForSelectedRow{
+            tableView.deselectRow(at: selectIndexPath, animated: true)
+        }
+        
+        //插入过去日志
+        var indexPathList = [IndexPath]()
+        for (index, _) in pastNoteList[0].list().enumerated(){
+            let indexPath = IndexPath(row: index, section: 0)
+            indexPathList.append(indexPath)
+        }
+        if isPastNoteOpen{    //显示历史提醒
+            tableView.insertRows(at: indexPathList, with: .none)
+        }else{              //移除历史提醒
+            let rowsCount = tableView.numberOfRows(inSection: 0)
+            if rowsCount == indexPathList.count{
+                tableView.deleteRows(at: indexPathList, with: .none)
+            }
+        }
     }
     
     //MARK:- 判断当前cell是否被选中
@@ -243,8 +267,22 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44   //navigation正常高度
+        let pastNoteList = noteTypeList.filter { (noteType) -> Bool in
+            if case NoteType.past(_) = noteType{
+                return true
+            }
+            return false
+        }
+        guard !pastNoteList.isEmpty, section == 0 else {
+            return 44 //navigation正常高度
+        }
+        return 44 + 64
     }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return section == noteTypeList.count - 1 ? 120 : 1
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = indexPath.section
         let row = indexPath.row
@@ -280,12 +318,12 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         let note = noteList[row]
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as! MainCell
         cell.note = note
+        let coredataHandler = CoredataHandler.share()
         
         cell.contentsLabel.numberOfLines = isSeleceted(withIndexPath: indexPath) ? 0 : 1
         //完成回调
         cell.finisheClosure = {
             finished in
-            let coredataHandler = CoredataHandler.share()
             note.isFinished = finished
             guard coredataHandler.commit() else{
                 return
@@ -295,10 +333,16 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         //提醒设置回调
         cell.remindClosure = {
             remindFlag in
+            note.isNotify = remindFlag
+            coredataHandler.commit()
         }
         //编辑回调
         cell.editClosure = {
             self.edit(withNote: note)
+        }
+        
+        if row != 0{
+            cell.addTopSeparator()
         }
         
         //绘制圆角计算
@@ -306,7 +350,8 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         var isBottomRadius = false
         if row == 0 {
             isTopRadius = true
-        }else if row == noteList.count - 1{
+        }
+        if row == noteList.count - 1{
             isBottomRadius = true
         }
         cell.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
@@ -315,7 +360,12 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
     
     //MARK: 取消选中判断
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let section = indexPath.section
+        let row = indexPath.row
+        let noteType = noteTypeList[section]
+        let noteList = noteType.list()
         let cell = tableView.cellForRow(at: indexPath)
+        
         guard let isSelected = cell?.isSelected else{
             return nil
         }
@@ -324,6 +374,17 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
             tableView.deselectRow(at: indexPath, animated: true)
             tableView.beginUpdates()
             tableView.endUpdates()
+            
+            //绘制圆角计算
+            var isTopRadius = false
+            var isBottomRadius = false
+            if row == 0 {
+                isTopRadius = true
+            }
+            if row == noteList.count - 1{
+                isBottomRadius = true
+            }
+            cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
             return nil
         }
 
@@ -338,16 +399,21 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         let noteList = noteType.list()
         let cell = tableView.cellForRow(at: indexPath)
         
+        CATransaction.begin()
+        CATransaction.setCompletionBlock {
+            
+        }
         tableView.beginUpdates()
         tableView.endUpdates()
-        
+        CATransaction.commit()
 
         //绘制圆角计算
         var isTopRadius = false
         var isBottomRadius = false
         if row == 0 {
             isTopRadius = true
-        }else if row == noteList.count - 1{
+        }
+        if row == noteList.count - 1{
             isBottomRadius = true
         }
         cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
@@ -361,19 +427,24 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         let noteList = noteType.list()
         let cell = tableView.cellForRow(at: indexPath)
         
+        CATransaction.begin()
+        CATransaction.setCompletionBlock {
+            
+            //绘制圆角计算
+            var isTopRadius = false
+            var isBottomRadius = false
+            if row == 0 {
+                isTopRadius = true
+            }
+            if row == noteList.count - 1{
+                isBottomRadius = true
+            }
+            cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
+        }
         tableView.beginUpdates()
         tableView.endUpdates()
+        CATransaction.commit()
         
-        
-        //绘制圆角计算
-        var isTopRadius = false
-        var isBottomRadius = false
-        if row == 0 {
-            isTopRadius = true
-        }else if row == noteList.count - 1{
-            isBottomRadius = true
-        }
-        cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
     }
 }
 

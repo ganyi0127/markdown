@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,7 +21,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="zm0-qS-lE2">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="115" id="eBg-tE-2Ib" customClass="MainCell" customModule="Markdown" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="115"/>
@@ -30,49 +31,71 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="yyy.M.d" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZEm-Ft-mTa">
-                                                    <rect key="frame" x="16" y="8" width="167.5" height="21"/>
+                                                    <rect key="frame" x="32" y="1.5" width="159.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HH:mm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WoA-Oz-rV7">
-                                                    <rect key="frame" x="191.5" y="8" width="167.5" height="21"/>
+                                                    <rect key="frame" x="199.5" y="1.5" width="159.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fDc-Nq-AGb">
-                                                    <rect key="frame" x="16" y="37" width="343" height="20.5"/>
+                                                    <rect key="frame" x="16" y="30.5" width="343" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4b-ap-7g1">
-                                                    <rect key="frame" x="328" y="74" width="31" height="30"/>
-                                                    <state key="normal" title="重置"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4b-ap-7g1">
+                                                    <rect key="frame" x="16" y="84" width="23" height="23"/>
+                                                    <state key="normal" image="reset"/>
                                                     <connections>
                                                         <action selector="finishNote:" destination="eBg-tE-2Ib" eventType="touchUpInside" id="yk1-ic-X3E"/>
                                                     </connections>
                                                 </button>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Utd-1N-JAm">
+                                                    <rect key="frame" x="16" y="8" width="8" height="8"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="8" id="e8N-WP-pW3"/>
+                                                        <constraint firstAttribute="width" secondItem="Utd-1N-JAm" secondAttribute="height" multiplier="1:1" id="g1p-VW-xUe"/>
+                                                    </constraints>
+                                                </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUc-kB-AFk">
+                                                    <rect key="frame" x="339" y="84" width="20" height="23"/>
+                                                    <state key="normal" image="delete"/>
+                                                    <connections>
+                                                        <action selector="deleteNote:" destination="eBg-tE-2Ib" eventType="touchUpInside" id="z7Y-J8-rxc"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="ZEm-Ft-mTa" firstAttribute="leading" secondItem="ZBv-5C-P5n" secondAttribute="leading" constant="16" id="0J8-KT-h5U"/>
                                                 <constraint firstItem="WoA-Oz-rV7" firstAttribute="leading" secondItem="ZEm-Ft-mTa" secondAttribute="trailing" constant="8" id="4sr-7X-bV3"/>
+                                                <constraint firstItem="ZEm-Ft-mTa" firstAttribute="leading" secondItem="Utd-1N-JAm" secondAttribute="trailing" constant="8" id="5Rr-Qc-5hY"/>
+                                                <constraint firstItem="Utd-1N-JAm" firstAttribute="leading" secondItem="ZBv-5C-P5n" secondAttribute="leading" constant="16" id="6wo-HX-zr7"/>
                                                 <constraint firstAttribute="trailing" secondItem="fDc-Nq-AGb" secondAttribute="trailing" constant="16" id="HPL-6f-eon"/>
-                                                <constraint firstAttribute="bottom" secondItem="L4b-ap-7g1" secondAttribute="bottom" constant="11" id="LJy-DL-lxL"/>
-                                                <constraint firstItem="WoA-Oz-rV7" firstAttribute="top" secondItem="ZBv-5C-P5n" secondAttribute="top" constant="8" id="P9B-6L-F8y"/>
+                                                <constraint firstAttribute="bottom" secondItem="L4b-ap-7g1" secondAttribute="bottom" constant="8" id="LJy-DL-lxL"/>
                                                 <constraint firstItem="fDc-Nq-AGb" firstAttribute="top" secondItem="ZEm-Ft-mTa" secondAttribute="bottom" constant="8" id="Shq-o4-QRP"/>
+                                                <constraint firstAttribute="trailing" secondItem="RUc-kB-AFk" secondAttribute="trailing" constant="16" id="VrN-x1-Lah"/>
                                                 <constraint firstAttribute="trailing" secondItem="WoA-Oz-rV7" secondAttribute="trailing" constant="16" id="WYm-1x-YCT"/>
-                                                <constraint firstAttribute="trailing" secondItem="L4b-ap-7g1" secondAttribute="trailing" constant="16" id="alU-XX-4A5"/>
                                                 <constraint firstItem="fDc-Nq-AGb" firstAttribute="leading" secondItem="ZBv-5C-P5n" secondAttribute="leading" constant="16" id="arJ-P5-oIl"/>
-                                                <constraint firstItem="ZEm-Ft-mTa" firstAttribute="top" secondItem="ZBv-5C-P5n" secondAttribute="top" constant="8" id="d5a-nq-jeC"/>
+                                                <constraint firstAttribute="bottom" secondItem="RUc-kB-AFk" secondAttribute="bottom" constant="8" id="glQ-EB-XSW"/>
                                                 <constraint firstItem="WoA-Oz-rV7" firstAttribute="width" secondItem="ZEm-Ft-mTa" secondAttribute="width" id="h7n-1e-Sam"/>
+                                                <constraint firstItem="ZEm-Ft-mTa" firstAttribute="centerY" secondItem="Utd-1N-JAm" secondAttribute="centerY" id="m03-sZ-ooo"/>
+                                                <constraint firstItem="WoA-Oz-rV7" firstAttribute="centerY" secondItem="Utd-1N-JAm" secondAttribute="centerY" id="pFe-Om-TOM"/>
+                                                <constraint firstItem="L4b-ap-7g1" firstAttribute="leading" secondItem="ZBv-5C-P5n" secondAttribute="leading" constant="16" id="vxO-yp-fq9"/>
+                                                <constraint firstItem="Utd-1N-JAm" firstAttribute="top" secondItem="ZBv-5C-P5n" secondAttribute="top" constant="8" id="ynP-c6-jbS"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="1" green="0.76429578990000002" blue="0.33299195770000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="contentsLabel" destination="fDc-Nq-AGb" id="1ST-Bm-ZJZ"/>
                                             <outlet property="dateLabel" destination="ZEm-Ft-mTa" id="c4Y-hw-hkw"/>
+                                            <outlet property="deleteButton" destination="RUc-kB-AFk" id="e71-zM-8c1"/>
                                             <outlet property="resetButton" destination="L4b-ap-7g1" id="xMN-yS-3A6"/>
+                                            <outlet property="tagView" destination="ZBv-5C-P5n" id="Pdk-Qg-jKY"/>
                                             <outlet property="timeLabel" destination="WoA-Oz-rV7" id="KZJ-hw-wT4"/>
                                         </connections>
                                     </tableViewCell>
@@ -98,7 +121,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UZ7-vT-OB9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-294" y="41"/>
+            <point key="canvasLocation" x="-295.19999999999999" y="40.929535232383813"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="delete" width="20" height="23"/>
+        <image name="reset" width="23" height="23"/>
+    </resources>
 </document>

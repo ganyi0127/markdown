@@ -18,8 +18,30 @@ extension UIColor{
                   blue: CGFloat(hex & 0x0000FF) / 255,
                   alpha: alpha)
     }
-    static let word = UIColor(red: 50 / 255, green: 50 / 255, blue: 50 / 255, alpha: 1)
-    static let subWord = UIColor(red: 100 / 255, green: 100 / 255, blue: 100 / 255, alpha: 1)
-    static let card = UIColor(colorHex: 0xe0c8b1)
-    static let cardSelected = UIColor(colorHex: 0xf5fbbf)
+    
+    ///主文字
+    static let word = UIColor(colorHex: 0x333333)
+    ///附文字
+    static let subWord = UIColor(colorHex: 0x999999)
+    
+    
+    ///分割线
+    static let separator = UIColor.background //UIColor(colorHex: 0xe6e6e6)
+    
+    ///卡片-正常
+    static let card = UIColor(colorHex: 0xffffff)
+    ///卡片-选中
+    static let cardSelected = UIColor(colorHex: 0x448aca)
+    
+    ///主色调
+    static let main = UIColor(colorHex: 0x448aca)
+    ///辅色调
+    static let sub = UIColor(colorHex: 0x88abda)
+    ///深色调
+    static let deep = UIColor(colorHex: 0x0075a9)
+    ///home
+    static let home = UIColor(colorHex: 0xb6c7c9)
+    
+    ///背景
+    static let background = UIColor(colorHex: 0xc7d2ea)
 }

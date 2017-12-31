@@ -10,5 +10,7 @@
 #define Header_h
 
 @import UIKit;
+@import UserNotifications;
+@import CoreData;
 
 #endif /* Header_h */

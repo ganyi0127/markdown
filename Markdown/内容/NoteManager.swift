@@ -48,7 +48,7 @@ func sortAndEnumNotesByDate(withOriginNotes originNotes: [Note]) -> [NoteType]{
     var resultList = [NoteType]()
     
     let pastList = originNotes.filter { (note) -> Bool in
-        guard let beginDate = note.beginDate else{
+        guard let beginDate = note.beginDate, note.hasDate else{
             return false
         }
         
@@ -68,7 +68,7 @@ func sortAndEnumNotesByDate(withOriginNotes originNotes: [Note]) -> [NoteType]{
     }
     
     let todayList = originNotes.filter { (note) -> Bool in
-        guard let beginDate = note.beginDate else{
+        guard let beginDate = note.beginDate, note.hasDate else{
             return true
         }
         return beginDate.isToday()
@@ -79,7 +79,7 @@ func sortAndEnumNotesByDate(withOriginNotes originNotes: [Note]) -> [NoteType]{
     }
     
     let futureList = originNotes.filter { (note) -> Bool in
-        guard let beginDate = note.beginDate else{
+        guard let beginDate = note.beginDate, note.hasDate else{
             return false
         }
         

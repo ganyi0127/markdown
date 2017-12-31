@@ -31,6 +31,15 @@ var preToday = Date()
 //文件管理
 let fileManager = FileManager.default
 
+//标签列表
+let tagColorList: [UIColor] = [UIColor.init(colorHex: 0xff3b2f),
+                               UIColor.init(colorHex: 0xff9323),
+                               UIColor.init(colorHex: 0x007aff),
+                               UIColor.init(colorHex: 0xcb73e1),
+                               UIColor.init(colorHex: 0x8f8e94),
+                               UIColor.init(colorHex: 0x52d865),
+                               UIColor.init(colorHex: 0xfdce00)]
+
 //MARK:- 正则表达式
 struct Regex {
     let regex: NSRegularExpression?

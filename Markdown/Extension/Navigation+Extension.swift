@@ -9,6 +9,10 @@
 import Foundation
 extension UINavigationController: UINavigationControllerDelegate{
     open override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        
+
         delegate = self
         
         //初始化存储navigation高度
@@ -18,17 +22,13 @@ extension UINavigationController: UINavigationControllerDelegate{
         
         //设置title
         navigationBar.titleTextAttributes = [NSAttributedStringKey.font: UIFont.middle,
-                                             NSAttributedStringKey.foregroundColor: UIColor(red: 42 / 255, green: 42 / 255, blue: 42 / 255, alpha: 1)]
-        navigationBar.topItem?.title = ""           //设置返回文字为空
-        navigationBar.backgroundColor = .orange     //设置背景颜色
+                                             NSAttributedStringKey.foregroundColor: UIColor.word]
+        navigationBar.backgroundColor = .sub     //设置背景颜色
         isNavigationBarHidden = true                //默认隐藏导航栏
         
-        /*
-         let image = UIImage(named: "resource/navigation_back")?.transfromImage(size: CGSize(width: view_size.width, height: navigation_height! + 64))
-         navigationBar.setBackgroundImage(image, for: .default)
-         navigationBar.shadowImage = UIImage()
-         */
     }
+    
+    
     
     //切换界面时调用_手环按钮
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {

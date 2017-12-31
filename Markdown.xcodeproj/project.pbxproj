@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		32012E551FF96839004D607F /* NotifManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32012E541FF96839004D607F /* NotifManager.swift */; };
 		320665C91F9F6CE600B42859 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320665C81F9F6CE600B42859 /* Date+Extension.swift */; };
 		320665CB1F9F6F1400B42859 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320665CA1F9F6F1400B42859 /* View+Extension.swift */; };
 		320665CE1F9F6F7B00B42859 /* PopTransition0.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320665CC1F9F6F7A00B42859 /* PopTransition0.swift */; };
@@ -43,6 +44,8 @@
 		323D354E1F9F2EC6002FC52F /* Graphic.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 323D354D1F9F2EC6002FC52F /* Graphic.storyboard */; };
 		323D35501F9F2EE5002FC52F /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 323D354F1F9F2EE5002FC52F /* Setting.storyboard */; };
 		323D35521F9F2F05002FC52F /* History.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 323D35511F9F2F05002FC52F /* History.storyboard */; };
+		329E635A1FEFB27B00CD60F8 /* Button+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329E63591FEFB27B00CD60F8 /* Button+Extension.swift */; };
+		329E635C1FF7780600CD60F8 /* EditVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329E635B1FF7780600CD60F8 /* EditVCCell.swift */; };
 		32D7172B1F9F36240065A3AB /* Edit.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32D7172A1F9F36240065A3AB /* Edit.storyboard */; };
 		32D7172D1F9F36350065A3AB /* EditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D7172C1F9F36350065A3AB /* EditVC.swift */; };
 		32DACAD91FA0B63F00D370C5 /* CD+Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DACAD81FA0B63F00D370C5 /* CD+Note.swift */; };
@@ -68,6 +71,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		32012E541FF96839004D607F /* NotifManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifManager.swift; sourceTree = "<group>"; };
+		32012E561FF96B22004D607F /* Markdown.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Markdown.entitlements; sourceTree = "<group>"; };
 		320665C81F9F6CE600B42859 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		320665CA1F9F6F1400B42859 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		320665CC1F9F6F7A00B42859 /* PopTransition0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopTransition0.swift; sourceTree = "<group>"; };
@@ -111,6 +116,8 @@
 		323D354D1F9F2EC6002FC52F /* Graphic.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Graphic.storyboard; sourceTree = "<group>"; };
 		323D354F1F9F2EE5002FC52F /* Setting.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Setting.storyboard; sourceTree = "<group>"; };
 		323D35511F9F2F05002FC52F /* History.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = History.storyboard; sourceTree = "<group>"; };
+		329E63591FEFB27B00CD60F8 /* Button+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+Extension.swift"; sourceTree = "<group>"; };
+		329E635B1FF7780600CD60F8 /* EditVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVCCell.swift; sourceTree = "<group>"; };
 		32D7172A1F9F36240065A3AB /* Edit.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Edit.storyboard; sourceTree = "<group>"; };
 		32D7172C1F9F36350065A3AB /* EditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVC.swift; sourceTree = "<group>"; };
 		32DACAD81FA0B63F00D370C5 /* CD+Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CD+Note.swift"; sourceTree = "<group>"; };
@@ -143,6 +150,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		32012E531FF96824004D607F /* 提醒管理 */ = {
+			isa = PBXGroup;
+			children = (
+				32012E541FF96839004D607F /* NotifManager.swift */,
+			);
+			path = "提醒管理";
+			sourceTree = "<group>";
+		};
 		320665D01F9F6F8200B42859 /* 转场效果 */ = {
 			isa = PBXGroup;
 			children = (
@@ -175,6 +190,7 @@
 		323D34E41F9EF737002FC52F /* Markdown */ = {
 			isa = PBXGroup;
 			children = (
+				32012E561FF96B22004D607F /* Markdown.entitlements */,
 				323D34E51F9EF737002FC52F /* AppDelegate.swift */,
 				323D34E71F9EF737002FC52F /* Header.h */,
 				323D34E91F9EF737002FC52F /* Main.storyboard */,
@@ -228,6 +244,7 @@
 				320665C81F9F6CE600B42859 /* Date+Extension.swift */,
 				320665CA1F9F6F1400B42859 /* View+Extension.swift */,
 				321BE94F1FE68583008DC530 /* Label+Extension.swift */,
+				329E63591FEFB27B00CD60F8 /* Button+Extension.swift */,
 				321BE94B1FE6500D008DC530 /* TableViewCell+Extension.swift */,
 				320665D31F9F706B00B42859 /* Float+Extension.swift */,
 				320665D71F9F745900B42859 /* ViewController+Extension.swift */,
@@ -258,6 +275,7 @@
 				323D35461F9F2E11002FC52F /* setting */,
 				323D35451F9F2E0A002FC52F /* history */,
 				32D717291F9F36130065A3AB /* edit */,
+				32012E531FF96824004D607F /* 提醒管理 */,
 			);
 			path = "内容";
 			sourceTree = "<group>";
@@ -312,6 +330,7 @@
 			children = (
 				32D7172A1F9F36240065A3AB /* Edit.storyboard */,
 				32D7172C1F9F36350065A3AB /* EditVC.swift */,
+				329E635B1FF7780600CD60F8 /* EditVCCell.swift */,
 				320665D51F9F739900B42859 /* Selector.swift */,
 			);
 			path = edit;
@@ -386,6 +405,11 @@
 					323D34E11F9EF737002FC52F = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					323D34F81F9EF737002FC52F = {
 						CreatedOnToolsVersion = 9.0;
@@ -456,6 +480,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				323D34EE1F9EF737002FC52F /* Markdown.xcdatamodeld in Sources */,
+				32012E551FF96839004D607F /* NotifManager.swift in Sources */,
 				323D354A1F9F2E64002FC52F /* SettingVC.swift in Sources */,
 				320665D61F9F739900B42859 /* Selector.swift in Sources */,
 				320665CE1F9F6F7B00B42859 /* PopTransition0.swift in Sources */,
@@ -475,6 +500,7 @@
 				323D354C1F9F2E7C002FC52F /* HistoryVC.swift in Sources */,
 				32D7172D1F9F36350065A3AB /* EditVC.swift in Sources */,
 				323D35411F9F1155002FC52F /* Image+Extension.swift in Sources */,
+				329E635C1FF7780600CD60F8 /* EditVCCell.swift in Sources */,
 				320665DA1F9F764900B42859 /* Timer.swift in Sources */,
 				323D352D1F9F0F0C002FC52F /* MenuVC.swift in Sources */,
 				320665D81F9F745900B42859 /* ViewController+Extension.swift in Sources */,
@@ -487,6 +513,7 @@
 				32DACAD91FA0B63F00D370C5 /* CD+Note.swift in Sources */,
 				320665C91F9F6CE600B42859 /* Date+Extension.swift in Sources */,
 				323D35301F9F0F17002FC52F /* MainVC.swift in Sources */,
+				329E635A1FEFB27B00CD60F8 /* Button+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -652,6 +679,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Markdown/Markdown.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NWGF84NL9Q;
 				INFOPLIST_FILE = "$(SRCROOT)/Markdown/SupportingFiles/Info.plist";
@@ -661,7 +689,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = Markdown/SupportingFiles/Header.h;
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -669,6 +697,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Markdown/Markdown.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NWGF84NL9Q;
 				INFOPLIST_FILE = "$(SRCROOT)/Markdown/SupportingFiles/Info.plist";
@@ -678,7 +707,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = Markdown/SupportingFiles/Header.h;
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

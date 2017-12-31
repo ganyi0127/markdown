@@ -39,4 +39,12 @@ extension UITableViewCell{
         maskLayer.path = path.cgPath
         layer.mask = maskLayer
     }
+    
+    ///添加顶部分割线
+    func addTopSeparator(withColor color: UIColor = .separator){
+        let separatorFrame = CGRect(x: 0, y: 0, width: frame.width, height: 1)
+        let separator = UIView(frame: separatorFrame)
+        separator.backgroundColor = color
+        addSubview(separator)
+    }
 }

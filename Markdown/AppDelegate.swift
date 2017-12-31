@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,13 +15,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        setupLocalNotification()
         return true
+    }
+    
+    //MARK:- 设置本地推送
+    func setupLocalNotification(){
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            guard error == nil else{
+                return
+            }
+            
+            //self.window?.rootViewController?.notif(withTitle: granted ? "授权成功" : "授权取消")
+        }
+        
+        //获取当前通知设置
+        center.getNotificationSettings { (notificationSettings) in
+            print("notificationSettings: \(notificationSettings)")
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -94,3 +110,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+//MARK: notification delegate
+extension AppDelegate: UNUserNotificationCenterDelegate{
+    //接收推送内容
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+    }
+}

@@ -68,6 +68,12 @@ class HistoryVC: UIViewController {
         
         automaticallyAdjustsScrollViewInsets = false
         navigationItem.title = "历史事项"
+        
+        view.backgroundColor = .background
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        //解决重复刷新高度产生错误的bug
+        tableView.estimatedRowHeight = .edge8 + 21 + .edge8 + 21 + .edge8
     }
     
     private func createContents(){
@@ -107,6 +113,7 @@ extension HistoryVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 44   //navigation正常高度
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {        
         if let cell = tableView.cellForRow(at: indexPath) as? MainCell{
             cell.contentsLabel.numberOfLines = isSeleceted(withIndexPath: indexPath) ? 0 : 1
@@ -127,29 +134,58 @@ extension HistoryVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = indexPath.row
         let identifier = "cell"
-        let note = noteList[indexPath.row]
+        let note = noteList[row]
+        let coredataHandler = CoredataHandler.share()
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as! MainCell
-        cell.dateLabel.text = note.date?.formatString(with: "yyy.M.d")
-        cell.timeLabel.text = note.date?.formatString(with: "HH:mm")
+        cell.tagView.isHidden = true
+        cell.dateLabel.text = note.hasDate ? note.date?.formatString(with: "yyy.M.d") : nil
+        cell.timeLabel.text = note.hasTime ? note.date?.formatString(with: "HH:mm") : nil
         cell.contentsLabel.text = note.text
         cell.contentsLabel.numberOfLines = isSeleceted(withIndexPath: indexPath) ? 0 : 1
         cell.finisheClosure = {
             finished in
             let note = self.noteList[indexPath.row]
-            let coredataHandler = CoredataHandler.share()
             note.isFinished = finished            
             guard coredataHandler.commit() else{
                 return
             }
             self.updateData()
         }
+        cell.deleteClosure = {
+            let note = self.noteList[indexPath.row]
+            note.isErased = true
+            guard coredataHandler.commit() else{
+                return
+            }
+            self.updateData()
+        }
+        
+        if row != 0{
+            cell.addTopSeparator()
+        }
+        
+        //绘制圆角计算
+        var isTopRadius = false
+        var isBottomRadius = false
+        if row == 0 {
+            isTopRadius = true
+        }
+        if row == noteList.count - 1{
+            isBottomRadius = true
+        }
+        cell.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
+        
         return cell
     }
     
     //MARK: 取消选中判断
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {        
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let row = indexPath.row
         let cell = tableView.cellForRow(at: indexPath)
+        
         guard let isSelected = cell?.isSelected else{
             return nil
         }
@@ -158,30 +194,70 @@ extension HistoryVC: UITableViewDelegate, UITableViewDataSource{
             tableView.deselectRow(at: indexPath, animated: true)
             tableView.beginUpdates()
             tableView.endUpdates()
+            
+            //绘制圆角计算
+            var isTopRadius = false
+            var isBottomRadius = false
+            if row == 0 {
+                isTopRadius = true
+            }
+            if row == noteList.count - 1{
+                isBottomRadius = true
+            }
+            cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
             return nil
         }
+        
         return indexPath
     }
     
     //MARK: 选中判断
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = indexPath.row
+        let cell = tableView.cellForRow(at: indexPath)
         
+        CATransaction.begin()
+        CATransaction.setCompletionBlock {
+            
+        }
         tableView.beginUpdates()
         tableView.endUpdates()
-    }
-    
-    //MARK: 编辑
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteRowAction = UITableViewRowAction(style: .destructive, title: "删除") { (action, indexPath) in
-            let note = self.noteList[indexPath.row]
-            let coredataHandler = CoredataHandler.share()
-            coredataHandler.deleteNote(withNote: note)
-            self.updateData()
+        CATransaction.commit()
+        
+        //绘制圆角计算
+        var isTopRadius = false
+        var isBottomRadius = false
+        if row == 0 {
+            isTopRadius = true
         }
-        return [deleteRowAction]
+        if row == self.noteList.count - 1{
+            isBottomRadius = true
+        }
+        cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let row = indexPath.row
+
+        let cell = tableView.cellForRow(at: indexPath)
+        
+        CATransaction.begin()
+        CATransaction.setCompletionBlock {
+            
+            //绘制圆角计算
+            var isTopRadius = false
+            var isBottomRadius = false
+            if row == 0 {
+                isTopRadius = true
+            }
+            if row == self.noteList.count - 1{
+                isBottomRadius = true
+            }
+            cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
+        }
+        tableView.beginUpdates()
+        tableView.endUpdates()
+        CATransaction.commit()
+        
     }
 }

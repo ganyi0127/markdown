@@ -24,9 +24,10 @@ extension CoredataHandler{
         }
         
         note.date = Date()
-        note.isNotify = false
+        note.isNotify = true
         note.text = ""
         note.isFinished = false
+        note.tag = 0
         
         guard commit() else {
             return nil
@@ -48,12 +49,12 @@ extension CoredataHandler{
         let predicate: NSPredicate
         switch fetchType {
         case .all:
-            predicate = NSPredicate()
+            predicate = NSPredicate(format: "isErased==\(false)")
         case .finished:
-            predicate = NSPredicate(format: "isFinished==\(true)")
+            predicate = NSPredicate(format: "isFinished==\(true) AND isErased==\(false)")
             request.predicate = predicate
         case .unFinished:
-            predicate = NSPredicate(format: "isFinished==\(false)")
+            predicate = NSPredicate(format: "isFinished==\(false) AND isErased==\(false)")
             request.predicate = predicate
         }
         

@@ -10,6 +10,7 @@ import Foundation
 enum SelectorType {
     case birthday
     case date
+    case time
 }
 private let selectorSize = CGSize(width: view_size.width - 20 * 2, height: 256)
 class Selector: UIView {
@@ -18,9 +19,12 @@ class Selector: UIView {
     private var closure: ((_ accepted: Bool, _ value: Any?)->())?
     private var value: Any?
     
-    private let cornerRadius: CGFloat = 15
+    private let cornerRadius: CGFloat = .cornerRadius
     
     private var datePickerView: UIDatePicker?
+    
+    ///默认值
+    private var defaultValue: Any?
     
     //MARK:- init********************************************************************************
     private static let __once = Selector()
@@ -52,7 +56,7 @@ class Selector: UIView {
         gradient.locations = [startLocation, endLocation]
         gradient.startPoint = CGPoint(x: 0, y: 0)
         gradient.endPoint = CGPoint(x: 0, y: 1)
-        gradient.colors = [UIColor.lightGray.cgColor, UIColor.white.cgColor]
+        gradient.colors = [UIColor.sub.cgColor, UIColor.white.cgColor]
         gradient.cornerRadius = cornerRadius
         gradient.shadowColor = UIColor.black.cgColor
         gradient.shadowOffset = CGSize(width: 0, height: 0)
@@ -66,15 +70,13 @@ class Selector: UIView {
         //添加放弃按钮
         let refuseButton = UIButton(frame: CGRect(x: 0, y: 0, width: 64, height: 38))
         refuseButton.setTitle("cancel", for: .normal)
-        refuseButton.setTitleColor(.gray, for: .normal)
-        refuseButton.setTitleColor(.lightGray, for: .selected)
+        refuseButton.setTitleColor(.white, for: .normal)
         refuseButton.addTarget(self, action: #selector(refuse(sender:)), for: .touchUpInside)
         addSubview(refuseButton)
         
         let acceptButton = UIButton(frame: CGRect(x: selectorSize.width - 64, y: 0, width: 64, height: 38))
         acceptButton.setTitle("done", for: .normal)
-        acceptButton.setTitleColor(.gray, for: .normal)
-        acceptButton.setTitleColor(.lightGray, for: .selected)
+        acceptButton.setTitleColor(.white, for: .normal)
         acceptButton.addTarget(self, action: #selector(accept(sender:)), for: .touchUpInside)
         addSubview(acceptButton)
         
@@ -98,26 +100,52 @@ class Selector: UIView {
         
         let type = selectorType as SelectorType
         switch type {
-        case .birthday, .date:
+        case .birthday, .date, .time:
             let datePickerFrame = CGRect(x: 0, y: 38, width: bounds.width, height: bounds.height - 38)
             datePickerView = UIDatePicker(frame: datePickerFrame)
             datePickerView?.addTarget(self, action: #selector(selectDate(sender:)), for: .valueChanged)
             
             if type == .birthday {
                 datePickerView?.datePickerMode = .dateAndTime
-                datePickerView?.maximumDate = Date(timeIntervalSinceNow: 50 * 360 * 60 * 60 * 24)   //80年后
+                datePickerView?.maximumDate = Date(timeIntervalSinceNow: 120 * 360 * 60 * 60 * 24)   //120年前
                 datePickerView?.minimumDate = Date(timeIntervalSinceNow: 60 * 5)                   //5分钟后
                 
-                let defaultDate = Date(timeIntervalSinceNow: 60 * 5)
+                let defaultDate: Date
+                if let dv = defaultValue as? Date{
+                    defaultDate = dv
+                }else{
+                    defaultDate = Date(timeIntervalSinceNow: 60 * 5)
+                }
+                
                 datePickerView?.date = defaultDate
                 value = defaultDate
                 datePickerView?.setDate(defaultDate, animated: true)
             }else if type == .date{
-                datePickerView?.datePickerMode = .dateAndTime
-                datePickerView?.maximumDate = Date(timeIntervalSinceNow: 50 * 360 * 60 * 60 * 24)   //80年后
+                datePickerView?.datePickerMode = .date
+                datePickerView?.maximumDate = Date(timeIntervalSinceNow: 80 * 360 * 60 * 60 * 24)   //80年后
                 datePickerView?.minimumDate = Date(timeIntervalSinceNow: 60 * 5)                   //5分钟后
                 
-                let defaultDate = Date(timeIntervalSinceNow: 60 * 5)
+                let defaultDate: Date
+                if let dv = defaultValue as? Date{
+                    defaultDate = dv
+                }else{
+                    defaultDate = Date(timeIntervalSinceNow: 60 * 5)
+                }
+                datePickerView?.date = defaultDate
+                value = defaultDate
+                datePickerView?.setDate(defaultDate, animated: true)
+            }else if type == .time{
+                datePickerView?.datePickerMode = .time
+                
+                datePickerView?.maximumDate = Date().offset(with: 0, withTime: false)   //1day后
+                datePickerView?.minimumDate = Date().offset(with: 1, withTime: false)              //0分钟后
+                
+                let defaultDate: Date
+                if let dv = defaultValue as? Date{
+                    defaultDate = dv
+                }else{
+                    defaultDate = Date()
+                }
                 datePickerView?.date = defaultDate
                 value = defaultDate
                 datePickerView?.setDate(defaultDate, animated: true)
@@ -137,7 +165,7 @@ class Selector: UIView {
     //MARK:- 日期选择器回调
     @objc private func selectDate(sender: UIDatePicker){
         switch selectorType as SelectorType {
-        case .birthday, .date:
+        case .birthday, .date, .time:
             value = sender.date
         default:
             break
@@ -145,7 +173,8 @@ class Selector: UIView {
     }
     
     //MARK:- 显示
-    func show(with selectorType: SelectorType, closure: ((_ accepted: Bool, _ value: Any?)->())?){
+    func show(with selectorType: SelectorType, defaultValue: Any? = nil, closure: ((_ accepted: Bool, _ value: Any?)->())?){
+        self.defaultValue = defaultValue
         
         if superview != nil{
             self.removeFromSuperview()

@@ -28,6 +28,7 @@ class MenuItem {
     let title: String
     let color: UIColor
     let menuType: MenuType
+    let image: UIImage
     
     init(withMenuType menuType: MenuType) {
         self.menuType = menuType
@@ -35,16 +36,20 @@ class MenuItem {
         switch menuType {
         case .home:
             title = "主页"
-            color = .darkGray
+            color = .home
+            image = UIImage()
         case .graphic:
             title = "统计"
-            color = .orange
+            color = .sub
+            image = #imageLiteral(resourceName: "graphic")
         case .history:
             title = "历史"
-            color = .cyan
+            color = .main
+            image = #imageLiteral(resourceName: "history")
         case .setting:
             title = "设置"
-            color = .red
+            color = .deep
+            image = #imageLiteral(resourceName: "setting")
         }
     }
 }

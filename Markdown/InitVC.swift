@@ -65,6 +65,8 @@ class InitVC: UIViewController {
         menuContainerView.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
         hideMenu(true)
         
+        
+        
         //初始化数据库        
     }
     
