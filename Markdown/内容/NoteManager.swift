@@ -100,8 +100,55 @@ func sortAndEnumNotesByDate(withOriginNotes originNotes: [Note]) -> [NoteType]{
     return  resultList
 }
 
+typealias YearTuple = (year: Int, notes: [Note])
+
+///根据年份分类
+func getYearTupleList(closure: @escaping ([YearTuple])->()) {
+    DispatchQueue.global().async {
+        let dataHandler = CoredataHandler.share()
+        let noteList = dataHandler.selectNotes()
+        //升序
+        let sortedNoteList = noteList.sorted { (note0, note1) -> Bool in
+            let noteDate0 = note0.beginDate ?? note0.date!
+            let noteDate1 = note1.beginDate ?? note1.date!
+            let result = noteDate0.compare(noteDate1)
+            if result == ComparisonResult.orderedAscending{
+                return true
+            }
+            return false
+        }
+        guard let firstNote = sortedNoteList.first,
+            let lastNote = sortedNoteList.last else{
+                DispatchQueue.main.async {
+                    closure([])
+                }
+                return
+        }
+        
+        let firstDate = firstNote.beginDate ?? firstNote.date!
+        let firstYear = calendar.component(.year, from: firstDate)
+        let lastDate = lastNote.beginDate ?? lastNote.date!
+        let lastYear = calendar.component(.year, from: lastDate)
+        
+        var resultList = [YearTuple]()
+        for year in firstYear...lastYear{
+            let thisYearNoteList = sortedNoteList.filter({ (note) -> Bool in
+                let date = note.beginDate ?? note.date!
+                let y = calendar.component(.year, from: date)
+                return y == year
+            })
+            if !thisYearNoteList.isEmpty{
+                resultList.append((year: year, notes: thisYearNoteList))
+            }
+        }
+        DispatchQueue.main.async {
+            closure(resultList)
+        }
+    }
+}
+
 //根据时间排序
-func sortNotesByDate(withOriginNotes originNotes: [Note]) -> [Note]{
+private func sortNotesByDate(withOriginNotes originNotes: [Note]) -> [Note]{
     return originNotes.sorted(by: { (note0, note1) -> Bool in
         if let beginDate0 = note0.beginDate, let beginDate1 = note1.beginDate{
             let result = beginDate0.compare(beginDate1)

@@ -7,10 +7,10 @@
         <attribute name="hasDate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="hasTime" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isErased" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isFinished" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isNotify" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="tag" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="text" attributeType="String" syncable="YES"/>
+        <attribute name="isFinished" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isNotify" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="tag" attributeType="Integer 32" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Note" positionX="-63" positionY="-18" width="128" height="195"/>

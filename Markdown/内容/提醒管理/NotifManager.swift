@@ -8,6 +8,25 @@
 
 import Foundation
 
+//MARK:- 设置提醒
+extension Note{
+    func setNotifStatus(withIsOpen isOpen: Bool){
+        let notifManager = NotifManager.share()
+        notifManager.hasNotif(withNote: self) { (isExisted) in
+            if isExisted{
+                notifManager.removeNotif(withNote: self)
+                if isOpen{
+                    notifManager.addNotif(withNote: self)
+                }
+            }else{
+                if isOpen{
+                    notifManager.addNotif(withNote: self)
+                }
+            }
+        }
+    }
+}
+
 class NotifManager {
     
     let center = UNUserNotificationCenter.current()
@@ -24,10 +43,12 @@ class NotifManager {
         return singleton.instance!
     }
     
+    ///设置提醒状态
+    
     ///添加新提醒
-    func addNotif(withNote note: Note){
-        
-        guard let date = note.beginDate else{
+    fileprivate func addNotif(withNote note: Note){
+        //判断是否可添加提醒
+        guard let date = note.beginDate, note.hasDate, note.hasTime, !note.isFinished, !note.isErased else{
             return
         }
         
@@ -35,10 +56,17 @@ class NotifManager {
         content.body = note.text ?? ""
         content.sound = UNNotificationSound.default()
         
+        //必须大于当前时间判断
+        let result = date.compare(Date())
+        guard result == .orderedDescending else {
+            return
+        }
+        
         let timeInterval = date.timeIntervalSinceNow
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
         
-        let request = UNNotificationRequest(identifier: "1", content: content, trigger: trigger)
+        let identifier = note.objectID.description
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
         center.add(request) { (error) in
             if error != nil{
@@ -47,8 +75,22 @@ class NotifManager {
         }
     }
     
+    ///判断是否有创建提醒
+    fileprivate func hasNotif(withNote note: Note, closure: @escaping (Bool)->()){
+        center.getPendingNotificationRequests { (notificationRequestList) in
+            for notificationRequest in notificationRequestList{
+                if notificationRequest.identifier == "\(note.objectID)"{
+                    closure(true)
+                    return
+                }
+            }
+        }
+        closure(false)
+    }
+    
     ///根据ObjectId移除提醒
-    func removeNotif(withNote note: Note){
-        center.removePendingNotificationRequests(withIdentifiers: [""])
+    fileprivate func removeNotif(withNote note: Note){
+        let identifier = "\(note.objectID)"
+        center.removePendingNotificationRequests(withIdentifiers: [identifier])
     }
 }

@@ -22,10 +22,10 @@ extension UINavigationController: UINavigationControllerDelegate{
         
         //设置title
         navigationBar.titleTextAttributes = [NSAttributedStringKey.font: UIFont.middle,
-                                             NSAttributedStringKey.foregroundColor: UIColor.word]
+                                             NSAttributedStringKey.foregroundColor: UIColor.white]
+        navigationBar.tintColor = .white
         navigationBar.backgroundColor = .sub     //设置背景颜色
         isNavigationBarHidden = true                //默认隐藏导航栏
-        
     }
     
     

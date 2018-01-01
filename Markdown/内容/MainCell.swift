@@ -46,6 +46,8 @@ class MainCell: UITableViewCell {
             timeLabel.textColor = textColor
             contentsLabel.text = n.text
             tagView.isHidden = n.tag == 0
+            remindButton.isSelected = n.isNotify
+            remindButton.isEnabled = n.hasDate && n.hasTime
             if n.tag > 0{                
                 tagView.backgroundColor = tagColorList[Int(n.tag) - 1]      //0选项为空
             }
@@ -80,30 +82,26 @@ class MainCell: UITableViewCell {
     
     //MARK: 更新
     private func update(){
-        backgroundColor = isSelected ? .cardSelected : .card
-        if finishedButton != nil{
-            finishedButton.isHidden = !isSelected
+        let flag = isSelected
+
+        self.backgroundColor = flag ? .cardSelected : .card
+        if self.finishedButton != nil{
+            self.finishedButton.layer.isHidden = !flag
         }
-        if resetButton != nil{
-            resetButton.isHidden = !isSelected
+        if self.resetButton != nil{
+            self.resetButton.layer.isHidden = !flag
         }
-        if editButton != nil{
-            editButton.isHidden = !isSelected
+        if self.editButton != nil{
+            self.editButton.layer.isHidden = !flag
         }
-        if remindButton != nil{
-            if isSelected{
-                remindButton.isHidden = false
-                if let n = note{
-                    remindButton.isEnabled = n.beginDate != nil
-                }
-            }else{
-                remindButton.isHidden = true
-            }
+        if self.remindButton != nil{
+            self.remindButton.layer.isHidden = !flag
         }
         
-        contentsLabel.textColor = isSelected ? .white : .word
-        dateLabel.textColor = isSelected ? .white : .word
-        timeLabel.textColor = isSelected ? .white : .word
+        self.contentsLabel.textColor = flag ? .white : .word
+        self.dateLabel.textColor = flag ? .white : .word
+        self.timeLabel.textColor = flag ? .white : .word
+        
     }
     
     //MARK:- 完成事项

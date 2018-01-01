@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		32012E551FF96839004D607F /* NotifManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32012E541FF96839004D607F /* NotifManager.swift */; };
+		32012E5C1FFA2B8E004D607F /* GraphicVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32012E5B1FFA2B8E004D607F /* GraphicVCCell.swift */; };
+		32012E5E1FFA3B42004D607F /* TableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32012E5D1FFA3B42004D607F /* TableView+Extension.swift */; };
+		32012E601FFA3ED7004D607F /* GraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32012E5F1FFA3ED7004D607F /* GraphicView.swift */; };
 		320665C91F9F6CE600B42859 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320665C81F9F6CE600B42859 /* Date+Extension.swift */; };
 		320665CB1F9F6F1400B42859 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320665CA1F9F6F1400B42859 /* View+Extension.swift */; };
 		320665CE1F9F6F7B00B42859 /* PopTransition0.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320665CC1F9F6F7A00B42859 /* PopTransition0.swift */; };
@@ -73,6 +76,9 @@
 /* Begin PBXFileReference section */
 		32012E541FF96839004D607F /* NotifManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifManager.swift; sourceTree = "<group>"; };
 		32012E561FF96B22004D607F /* Markdown.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Markdown.entitlements; sourceTree = "<group>"; };
+		32012E5B1FFA2B8E004D607F /* GraphicVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicVCCell.swift; sourceTree = "<group>"; };
+		32012E5D1FFA3B42004D607F /* TableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableView+Extension.swift"; sourceTree = "<group>"; };
+		32012E5F1FFA3ED7004D607F /* GraphicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicView.swift; sourceTree = "<group>"; };
 		320665C81F9F6CE600B42859 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		320665CA1F9F6F1400B42859 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		320665CC1F9F6F7A00B42859 /* PopTransition0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopTransition0.swift; sourceTree = "<group>"; };
@@ -250,6 +256,7 @@
 				320665D71F9F745900B42859 /* ViewController+Extension.swift */,
 				320665D91F9F764900B42859 /* Timer.swift */,
 				32DACADC1FA1A44F00D370C5 /* Font+Extension.swift */,
+				32012E5D1FFA3B42004D607F /* TableView+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -302,6 +309,8 @@
 			isa = PBXGroup;
 			children = (
 				323D35471F9F2E39002FC52F /* GraphicVC.swift */,
+				32012E5B1FFA2B8E004D607F /* GraphicVCCell.swift */,
+				32012E5F1FFA3ED7004D607F /* GraphicView.swift */,
 				323D354D1F9F2EC6002FC52F /* Graphic.storyboard */,
 			);
 			path = graphic;
@@ -485,6 +494,8 @@
 				320665D61F9F739900B42859 /* Selector.swift in Sources */,
 				320665CE1F9F6F7B00B42859 /* PopTransition0.swift in Sources */,
 				320665CB1F9F6F1400B42859 /* View+Extension.swift in Sources */,
+				32012E5E1FFA3B42004D607F /* TableView+Extension.swift in Sources */,
+				32012E601FFA3ED7004D607F /* GraphicView.swift in Sources */,
 				321BE94E1FE67A10008DC530 /* NoteManager.swift in Sources */,
 				323D353C1F9F108A002FC52F /* Navigation+Extension.swift in Sources */,
 				323D35361F9F100E002FC52F /* InitVC.swift in Sources */,
@@ -492,6 +503,7 @@
 				323D35481F9F2E39002FC52F /* GraphicVC.swift in Sources */,
 				323D35341F9F0FC8002FC52F /* MainRecordButton.swift in Sources */,
 				323D352E1F9F0F11002FC52F /* MenuCell.swift in Sources */,
+				32012E5C1FFA2B8E004D607F /* GraphicVCCell.swift in Sources */,
 				320665CF1F9F6F7B00B42859 /* PushTransition0.swift in Sources */,
 				323D353F1F9F10EE002FC52F /* CoredataHandler.swift in Sources */,
 				323D35381F9F102C002FC52F /* Configure.swift in Sources */,

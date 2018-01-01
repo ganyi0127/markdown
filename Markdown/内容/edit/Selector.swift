@@ -68,15 +68,13 @@ class Selector: UIView {
     private func createContents(){
         
         //添加放弃按钮
-        let refuseButton = UIButton(frame: CGRect(x: 0, y: 0, width: 64, height: 38))
-        refuseButton.setTitle("cancel", for: .normal)
-        refuseButton.setTitleColor(.white, for: .normal)
+        let refuseButton = UIButton(frame: CGRect(x: 0, y: 0, width: 38, height: 38))
+        refuseButton.setImage(#imageLiteral(resourceName: "cancel"), for: .normal)
         refuseButton.addTarget(self, action: #selector(refuse(sender:)), for: .touchUpInside)
         addSubview(refuseButton)
         
         let acceptButton = UIButton(frame: CGRect(x: selectorSize.width - 64, y: 0, width: 64, height: 38))
-        acceptButton.setTitle("done", for: .normal)
-        acceptButton.setTitleColor(.white, for: .normal)
+        acceptButton.setImage(#imageLiteral(resourceName: "confirm"), for: .normal)
         acceptButton.addTarget(self, action: #selector(accept(sender:)), for: .touchUpInside)
         addSubview(acceptButton)
         

@@ -8,6 +8,8 @@
 
 import Foundation
 typealias Task = (_ cancel: Bool)->()
+
+@discardableResult
 func delay(_ time: TimeInterval, task: @escaping ()->()) -> Task?{
     func dispathLater(_ block: @escaping ()->()){
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: block)

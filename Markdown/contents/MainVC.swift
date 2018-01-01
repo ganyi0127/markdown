@@ -121,10 +121,10 @@ class MainVC: UIViewController {
         mainButton.layer.cornerRadius = mainButton.frame.width / 2
         
         tableView.backgroundColor = .background
-        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.alwaysBounceVertical = true
         
         //解决重复刷新高度产生错误的bug
+        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = .edge8 + 21 + .edge8 + 21 + .edge8
     }
     
@@ -190,7 +190,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         let noteType = noteTypeList[section]
         
         let text = noteType.name()
-        let count = noteType.list().count
         let buttonSize = #imageLiteral(resourceName: "header_selected").size
         
         let header = UIView()
@@ -205,7 +204,8 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
             button.addTarget(self, action: #selector(check(_:)), for: .touchUpInside)
             button.isSelected = !isPastNoteOpen
         default:
-            let buttonFrame = CGRect(x: (view_size.width - buttonSize.width) / 2, y: (44 - buttonSize.height) / 2, width: buttonSize.width, height: buttonSize.height)
+            let offset: CGFloat = section == 0 ? 64 : 0
+            let buttonFrame = CGRect(x: (view_size.width - buttonSize.width) / 2, y: (44 - buttonSize.height) / 2 + offset, width: buttonSize.width, height: buttonSize.height)
             header.frame = buttonFrame
             button.frame = buttonFrame
             button.setTitle(text, for: .normal)
@@ -266,21 +266,12 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         return selectedIndex == indexPath
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let pastNoteList = noteTypeList.filter { (noteType) -> Bool in
-            if case NoteType.past(_) = noteType{
-                return true
-            }
-            return false
-        }
-        guard !pastNoteList.isEmpty, section == 0 else {
-            return 44 //navigation正常高度
-        }
-        return 44 + 64
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {        
+        return section == 0 ? 44 + 64 : 44
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == noteTypeList.count - 1 ? 120 : 1
+        return section == noteTypeList.count - 1 ? 120 : 30
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -328,13 +319,17 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
             guard coredataHandler.commit() else{
                 return
             }
+            note.setNotifStatus(withIsOpen: !finished)
             self.updateData()
         }
         //提醒设置回调
         cell.remindClosure = {
             remindFlag in
             note.isNotify = remindFlag
-            coredataHandler.commit()
+            guard coredataHandler.commit() else{
+                return
+            }
+            note.setNotifStatus(withIsOpen: remindFlag)
         }
         //编辑回调
         cell.editClosure = {
@@ -344,6 +339,15 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         if row != 0{
             cell.addTopSeparator()
         }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let row = indexPath.row
+        let noteType = noteTypeList[section]
+        let noteList = noteType.list()
         
         //绘制圆角计算
         var isTopRadius = false
@@ -355,7 +359,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
             isBottomRadius = true
         }
         cell.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
-        return cell
     }
     
     //MARK: 取消选中判断

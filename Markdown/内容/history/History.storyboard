@@ -95,7 +95,7 @@
                                             <outlet property="dateLabel" destination="ZEm-Ft-mTa" id="c4Y-hw-hkw"/>
                                             <outlet property="deleteButton" destination="RUc-kB-AFk" id="e71-zM-8c1"/>
                                             <outlet property="resetButton" destination="L4b-ap-7g1" id="xMN-yS-3A6"/>
-                                            <outlet property="tagView" destination="ZBv-5C-P5n" id="Pdk-Qg-jKY"/>
+                                            <outlet property="tagView" destination="Utd-1N-JAm" id="OGv-Fy-vUw"/>
                                             <outlet property="timeLabel" destination="WoA-Oz-rV7" id="KZJ-hw-wT4"/>
                                         </connections>
                                     </tableViewCell>

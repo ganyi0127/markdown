@@ -16,8 +16,7 @@ extension UIViewController{
         //自定义navigationBar
         let newBackItem = UIBarButtonItem(image: #imageLiteral(resourceName: "back"), style: .plain, target: self, action: #selector(back))
         navigationItem.leftBarButtonItem = newBackItem
-        navigationController?.navigationBar.shadowImage = UIImage()
-        
+        navigationController?.navigationBar.shadowImage = UIImage()        
         
         view.layer.cornerRadius = .cornerRadius
         

@@ -63,7 +63,9 @@ class EditVC: UIViewController {
             textView.text = n.text ?? ""
             curCount = n.text?.count ?? 0
             saveButtonItem.title = n.isFinished ? "激活" : "保存"
-            notifyDate = n.beginDate
+            if n.hasDate{
+                notifyDate = n.beginDate
+            }
             if n.hasTime{
                 notifyTime = n.beginDate
             }
@@ -216,7 +218,7 @@ class EditVC: UIViewController {
             notif(withTitle: "提交错误")
             return
         }
-        
+        note?.setNotifStatus(withIsOpen: true)
         navigationController?.popViewController(animated: true)
     }
 }
@@ -224,11 +226,15 @@ class EditVC: UIViewController {
 extension EditVC: UITextViewDelegate{
     func textViewDidBeginEditing(_ textView: UITextView) {
         
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "cancel"), style: .plain, target: self, action: #selector(back))
+        
         isTextViewEditing(flag: true)
         hiddenSelector()
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {        
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "back"), style: .plain, target: self, action: #selector(back))
         
         isTextViewEditing(flag: false)
     }
@@ -328,6 +334,7 @@ extension EditVC: UITableViewDelegate, UITableViewDataSource{
         if row == 0{
             cell = tableView.dequeueReusableCell(withIdentifier: "cell0")
             let cell0 = cell as! EditVCCell0
+            cell0.keyLabel.text = "提醒日期"
             if let date = notifyDate{
                 cell0.valueLabel.text = date.formatString(with: "yyy-M-d E")
             }else{
@@ -337,6 +344,7 @@ extension EditVC: UITableViewDelegate, UITableViewDataSource{
         }else if row == 1{
             cell = tableView.dequeueReusableCell(withIdentifier: "cell0")
             let cell0 = cell as! EditVCCell0
+            cell0.keyLabel.text = "提醒时间"
             if let time = notifyTime{
                 cell0.valueLabel.text = time.formatString(with: "hh:mm")
             }else{
@@ -348,9 +356,9 @@ extension EditVC: UITableViewDelegate, UITableViewDataSource{
             cell1.notifSwitch.setOn(isOn, animated: true)
             cell1.closure = {
                 isOn in
-                if self.notifyDate == nil{
+                if self.notifyDate == nil || self.notifyTime == nil{
                     if isOn {
-                        self.notif(withTitle: "需设置时间")
+                        self.notif(withTitle: self.notifyDate == nil ? "需设置日期" : "需设置时间")
                         cell1.notifSwitch.setOn(false, animated: true)
                     }
                 }else{

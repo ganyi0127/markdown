@@ -9,10 +9,10 @@
 import Foundation
 extension UITableViewCell{
     ///设置左边菜单圆角（未使用）
-    func setMenuRadius(){
-        let corner: UIRectCorner = [.topRight, .bottomRight]
+    func setGraphicRadius(){
+        let corner: UIRectCorner = [.topRight, .topLeft, .bottomRight, .bottomLeft]
         
-        let roundedRect = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height)
+        let roundedRect = CGRect(x: .edge8, y: .edge8, width: bounds.width - .edge8 * 2, height: bounds.height - .edge8 * 2)
         let cornerRadii = CGSize(width: .cornerRadius, height: .cornerRadius)
         let path = UIBezierPath(roundedRect: roundedRect, byRoundingCorners: corner, cornerRadii: cornerRadii)
         let maskLayer = CAShapeLayer()

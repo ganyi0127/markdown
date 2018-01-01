@@ -67,7 +67,7 @@ class HistoryVC: UIViewController {
     private func config(){
         
         automaticallyAdjustsScrollViewInsets = false
-        navigationItem.title = "历史事项"
+        navigationItem.title = "完成事项"
         
         view.backgroundColor = .background
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -152,6 +152,7 @@ extension HistoryVC: UITableViewDelegate, UITableViewDataSource{
             guard coredataHandler.commit() else{
                 return
             }
+            note.setNotifStatus(withIsOpen: !finished)
             self.updateData()
         }
         cell.deleteClosure = {
@@ -167,7 +168,16 @@ extension HistoryVC: UITableViewDelegate, UITableViewDataSource{
             cell.addTopSeparator()
         }
         
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        tableView.beginUpdates()
+        tableView.endUpdates()
+        
         //绘制圆角计算
+        let row = indexPath.row
         var isTopRadius = false
         var isBottomRadius = false
         if row == 0 {
@@ -177,8 +187,6 @@ extension HistoryVC: UITableViewDelegate, UITableViewDataSource{
             isBottomRadius = true
         }
         cell.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
-        
-        return cell
     }
     
     //MARK: 取消选中判断

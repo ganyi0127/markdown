@@ -24,10 +24,6 @@ extension CoredataHandler{
         }
         
         note.date = Date()
-        note.isNotify = true
-        note.text = ""
-        note.isFinished = false
-        note.tag = 0
         
         guard commit() else {
             return nil
