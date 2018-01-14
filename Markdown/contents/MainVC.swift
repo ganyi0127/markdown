@@ -249,11 +249,11 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
             indexPathList.append(indexPath)
         }
         if isPastNoteOpen{    //显示历史提醒
-            tableView.insertRows(at: indexPathList, with: .none)
+            tableView.insertRows(at: indexPathList, with: .fade)
         }else{              //移除历史提醒
             let rowsCount = tableView.numberOfRows(inSection: 0)
             if rowsCount == indexPathList.count{
-                tableView.deleteRows(at: indexPathList, with: .none)
+                tableView.deleteRows(at: indexPathList, with: .fade)
             }
         }
     }
@@ -375,19 +375,23 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
 
         if isSelected{
             tableView.deselectRow(at: indexPath, animated: true)
+            CATransaction.begin()
             tableView.beginUpdates()
+            CATransaction.setCompletionBlock {
+                //绘制圆角计算
+                var isTopRadius = false
+                var isBottomRadius = false
+                if row == 0 {
+                    isTopRadius = true
+                }
+                if row == noteList.count - 1{
+                    isBottomRadius = true
+                }
+                cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
+            }
             tableView.endUpdates()
+            CATransaction.commit()
             
-            //绘制圆角计算
-            var isTopRadius = false
-            var isBottomRadius = false
-            if row == 0 {
-                isTopRadius = true
-            }
-            if row == noteList.count - 1{
-                isBottomRadius = true
-            }
-            cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
             return nil
         }
 
@@ -431,8 +435,8 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         let cell = tableView.cellForRow(at: indexPath)
         
         CATransaction.begin()
+        tableView.beginUpdates()
         CATransaction.setCompletionBlock {
-            
             //绘制圆角计算
             var isTopRadius = false
             var isBottomRadius = false
@@ -444,7 +448,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
             }
             cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
         }
-        tableView.beginUpdates()
         tableView.endUpdates()
         CATransaction.commit()
         

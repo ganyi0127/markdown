@@ -61,6 +61,7 @@ class InitVC: UIViewController {
     
     private func config(){
         scrollView.layer.cornerRadius = .cornerRadius
+        scrollView.backgroundColor = .background
         
         menuContainerView.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
         hideMenu(true)
