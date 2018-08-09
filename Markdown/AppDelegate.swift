@@ -117,3 +117,28 @@ extension AppDelegate: UNUserNotificationCenterDelegate{
         
     }
 }
+
+
+//MARK:- 短按
+extension AppDelegate {
+    //MARK:-shortcut
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        let type = shortcutItem.type
+        
+        //跳转
+        guard let initVC = window?.rootViewController as? InitVC else{
+            return
+        }
+        switch type {
+        case "first":       //跳转到编辑页
+            //跳转到编辑页
+            guard let editVC = UIStoryboard(name: "Edit", bundle: Bundle.main).instantiateInitialViewController() as? EditVC else {
+                return
+            }
+            editVC.note = nil
+            initVC.mainVC?.navigationController?.show(editVC, sender: nil)
+        default:
+            break
+        }
+    }
+}

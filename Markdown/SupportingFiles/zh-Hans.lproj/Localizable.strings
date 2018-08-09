@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  Markdown
+
+  Created by YiGan on 2018/8/5.
+  Copyright © 2018 YiGan. All rights reserved.
+*/
+
+"CFBundleDisplayName" = "一个笔记";
+
+"today" = "今日";
+"unfinished" = "查看未处理";
+
+"will" = "往后";
+
+//编辑页导航
+"create" = "新建代办事项";
+"edit" = "编辑代办事项";
+
+//编辑页
+"empty content is not allow" = "需填写内容";
+"you did not set date & time" = "需设置完整日期与时间";
+"commit error" = "提交错误";
+
+"edit_date" = "提醒日期";
+"edit_time" = "提醒时间";
+"edit_nodate" = "未选择日期";
+"edit_notime" = "未选择时间";
+"edit_needdate" = "需设置日期";
+"edit_needtime" = "需设置时间";
+
+//菜单
+"menu_main" = "主页";
+"menu_statistics" = "统计";
+"menu_history" = "已完成";
+"menu_setting" = "设置";
+"menu_year" = "年";
+"menu_month" = "月";
+"menu_day" = "日";
+
+//导航
+"statistics" = "统计";
+"history" = "已完成";
+
+//历史
+"graphic_year" = "年";
+"graphic_month" = "月";

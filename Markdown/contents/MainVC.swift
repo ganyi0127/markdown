@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import WatchConnectivity
+
 var infoChanged = false
 class MainVC: UIViewController {
     @IBOutlet weak var mainButton: UIButton!
@@ -31,6 +33,10 @@ class MainVC: UIViewController {
                 identifier = "Setting"
             default:
                 break
+            }
+            
+            if identifier == "Setting" {
+                return
             }
             
             guard let storyboardId = identifier else {
@@ -82,9 +88,14 @@ class MainVC: UIViewController {
     
     
     fileprivate var isPastNoteOpen = false
+    fileprivate var isTodayNoteOpen = true
+    fileprivate var isFutureNoteOpen = true
+    
+    fileprivate var mainButtonFrame: CGRect?
     
     //MARK:- 数据------------------------------------------------------------------------------------------------
     private var noteTypeList = [NoteType]()
+    
     
     //MARK:- init ***************************************************************
     override func viewDidLoad() {
@@ -101,7 +112,27 @@ class MainVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
         
+        //修改导航栏颜色渐变
+        /*
+        let gradient = CAGradientLayer()
+        let frameAndStatusBar = CGRect(x: 0, y: 0, width: view_size.width, height: 64)
+        gradient.frame = frameAndStatusBar
+        gradient.colors = [UIColor.background.cgColor, UIColor.card.cgColor]
+        gradient.startPoint = CGPoint(x: 0, y: 1)
+        gradient.endPoint = CGPoint(x: 0, y: 0)
+        navigationController?.navigationBar.setBackgroundImage(image(fromLayer: gradient), for: .default)
+        */
+        
         updateData()
+    }
+    
+    //MARK:- 绘制gradient图片
+    private func image(fromLayer layer: CALayer) -> UIImage? {
+        UIGraphicsBeginImageContext(layer.frame.size)
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let outputImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return outputImage
     }
     
     //MARK: 更新数据
@@ -111,6 +142,31 @@ class MainVC: UIViewController {
         let unFinishedNotes = coredataHandler.selectNotes(withFetchType: .unFinished)
         noteTypeList = sortAndEnumNotesByDate(withOriginNotes: unFinishedNotes)
         tableView.reloadData()
+        
+        updateToWatch(withNotes: unFinishedNotes)
+    }
+    
+    //MARK:- 给手表发送内容
+    private func updateToWatch(withNotes notes: [Note]? = nil){
+        var sendNotes = notes
+        if sendNotes == nil{
+            let coredataHandler = CoredataHandler.share()
+            sendNotes = coredataHandler.selectNotes(withFetchType: .unFinished)
+        }
+        
+        //给手表发送消息
+        let session = WCSession.default
+        if session.isReachable {
+            var data = [[String:Any]]()
+            for note in sendNotes!{
+                data.append(["text": note.text ?? "","tag": note.tag])
+            }
+            session.sendMessage(["data": data], replyHandler: { (map) in
+                
+            }) { (error) in
+                print("send error: \(error)")
+            }
+        }
     }
     
     private func config(){
@@ -120,13 +176,27 @@ class MainVC: UIViewController {
         navigationItem.title = "待办事项"
         mainButton.layer.cornerRadius = mainButton.frame.width / 2
         
+        if mainButtonFrame == nil {
+            mainButtonFrame = mainButton.frame
+        }
+        
         tableView.backgroundColor = .background
         tableView.alwaysBounceVertical = true
         
         //解决重复刷新高度产生错误的bug
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = .edge8 + 21 + .edge8 + 21 + .edge8
+        
+        
+        //iwatch通讯
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            session.activate()
+        }
     }
+    
+    
     
     private func createContents(){
         
@@ -180,80 +250,209 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         case .past(let pastList):
             return isPastNoteOpen ? pastList.count : 0
         case .today(let todayList):
-            return todayList.count
+            return isTodayNoteOpen ? todayList.count : 0
         case .future(let futureList):
-            return futureList.count
+            return isFutureNoteOpen ? futureList.count : 0
         }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let noteType = noteTypeList[section]
         
-        let text = noteType.name()
         let buttonSize = #imageLiteral(resourceName: "header_selected").size
         
+        let offsetY: CGFloat = section == 0 ? 64 : 0
+        
         let header = UIView()
-        let button = UIButton()//UIButton(frame: buttonFrame)
+        header.frame = CGRect(x: 0, y: 0, width: view_size.width, height: 44 + 64)
+        let button = UIButton()
+        let buttonFrame = CGRect(x: (view_size.width - buttonSize.width) / 2, y: offsetY + (44 - buttonSize.height) / 2, width: buttonSize.width, height: buttonSize.height)
+        button.frame = buttonFrame
         switch noteType {
         case .past(let pastNoteList):
-            header.frame = CGRect(x: 0, y: 0, width: view_size.width, height: 44 + 64)
-            let buttonFrame = CGRect(x: (view_size.width - buttonSize.width) / 2, y: 64 + (44 - buttonSize.height) / 2, width: buttonSize.width, height: buttonSize.height)
-            button.frame = buttonFrame
-            button.setTitle("查看未处理(\(pastNoteList.count))", for: .selected)
-            button.setTitle("查看未处理", for: .normal)
+            let localizedString = localized("unfinished", comment: "查看未完成")
+            button.setTitle(localizedString + "(\(pastNoteList.count))", for: .selected)
+            button.setTitle(localizedString, for: .normal)
+            button.tag = 0
             button.addTarget(self, action: #selector(check(_:)), for: .touchUpInside)
             button.isSelected = !isPastNoteOpen
-        default:
-            let offset: CGFloat = section == 0 ? 64 : 0
-            let buttonFrame = CGRect(x: (view_size.width - buttonSize.width) / 2, y: (44 - buttonSize.height) / 2 + offset, width: buttonSize.width, height: buttonSize.height)
-            header.frame = buttonFrame
-            button.frame = buttonFrame
-            button.setTitle(text, for: .normal)
+        case .today(let todayNoteList):
+            let localizedString = localized("today", comment: "今日")
+            button.setTitle(localizedString + "(\(todayNoteList.count))", for: .selected)
+            button.setTitle(localizedString, for: .normal)
+            button.tag = 1
+            button.addTarget(self, action: #selector(check(_:)), for: .touchUpInside)
+            button.isSelected = !isTodayNoteOpen
+        case .future(let futureNoteList):
+            let localizedString = localized("will", comment: "往后")
+            button.setTitle(localizedString + "(\(futureNoteList.count))", for: .selected)
+            button.setTitle(localizedString, for: .normal)
+            button.tag = 2
+            button.addTarget(self, action: #selector(check(_:)), for: .touchUpInside)
+            button.isSelected = !isFutureNoteOpen
         }
         button.setTitleColor(.white, for: .selected)
         button.setTitleColor(.sub, for: .normal)
         button.setBackgroundImage(#imageLiteral(resourceName: "header_normal"), for: .normal)
         button.setBackgroundImage(#imageLiteral(resourceName: "header_selected"), for: .selected)
-        //button.setTitleColor(.subWord, for: .normal)
-        //        button.setHeaderLabelRadius()
         header.addSubview(button)
         return header
     }
     
     //MARK:- 点击查看
     @objc func check(_ sender: UIButton){
-        isPastNoteOpen = sender.isSelected
-        sender.isSelected = !sender.isSelected
-
-        let pastNoteList = noteTypeList.filter { (noteType) -> Bool in
-            if case NoteType.past(_) = noteType{
-                return true
-            }
-            return false
-        }
-        
-        //判断是否有过去日志
-        guard !pastNoteList.isEmpty else {
-            return
-        }
         
         //取消选中项
-        if let selectIndexPath = tableView.indexPathForSelectedRow{
-            tableView.deselectRow(at: selectIndexPath, animated: true)
+        if let selectedIndexPath = tableView.indexPathForSelectedRow{
+            tableView.deselectRow(at: selectedIndexPath, animated: true)
+            
+            CATransaction.begin()
+            tableView.beginUpdates()
+            CATransaction.setCompletionBlock {
+                
+                let selectedCell = self.tableView.cellForRow(at: selectedIndexPath)
+                let selectedSectionCount = self.tableView.numberOfRows(inSection: selectedIndexPath.section)
+                
+                //绘制圆角计算
+                var isTopRadius = false
+                var isBottomRadius = false
+                if selectedIndexPath.row == 0 {
+                    isTopRadius = true
+                }
+                if selectedIndexPath.row == selectedSectionCount - 1{
+                    isBottomRadius = true
+                }
+                selectedCell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
+            }
+            tableView.endUpdates()
+            CATransaction.commit()
+            
         }
         
-        //插入过去日志
-        var indexPathList = [IndexPath]()
-        for (index, _) in pastNoteList[0].list().enumerated(){
-            let indexPath = IndexPath(row: index, section: 0)
-            indexPathList.append(indexPath)
-        }
-        if isPastNoteOpen{    //显示历史提醒
-            tableView.insertRows(at: indexPathList, with: .fade)
-        }else{              //移除历史提醒
-            let rowsCount = tableView.numberOfRows(inSection: 0)
-            if rowsCount == indexPathList.count{
-                tableView.deleteRows(at: indexPathList, with: .fade)
+        //插入删除cell动画
+        let animation = UITableViewRowAnimation.fade
+        
+        //逻辑处理
+        let tag = sender.tag
+        switch tag {
+        case 0:     //未处理
+            isPastNoteOpen = sender.isSelected
+            sender.isSelected = !sender.isSelected
+            
+            let pastNoteList = noteTypeList.filter { (noteType) -> Bool in
+                if case NoteType.past(_) = noteType{
+                    return true
+                }
+                return false
+            }
+            
+            //判断是否有过去日志
+            guard !pastNoteList.isEmpty else {
+                return
+            }
+            
+            
+            
+            //插入过去日志
+            var indexPathList = [IndexPath]()
+            for (index, _) in pastNoteList[0].list().enumerated(){
+                let indexPath = IndexPath(row: index, section: 0)
+                indexPathList.append(indexPath)
+            }
+            if isPastNoteOpen{    //显示历史提醒
+                tableView.insertRows(at: indexPathList, with: animation)
+            }else{              //移除历史提醒
+                let rowsCount = tableView.numberOfRows(inSection: 0)
+                if rowsCount == indexPathList.count{
+                    tableView.deleteRows(at: indexPathList, with: animation)
+                }
+            }
+        case 1:     //今日
+            isTodayNoteOpen = sender.isSelected
+            sender.isSelected = !sender.isSelected
+            
+            let todayNoteList = noteTypeList.filter { (noteType) -> Bool in
+                if case NoteType.today(_) = noteType{
+                    return true
+                }
+                return false
+            }
+            
+            //判断是否有过去日志
+            guard !todayNoteList.isEmpty else {
+                return
+            }
+            
+            
+            
+            //判断section
+            var section = 0
+            if noteTypeList.contains(where: { (notetype) -> Bool in
+                switch notetype {
+                case .past(_):
+                    return true
+                default:
+                    return false
+                }
+            }) {
+                section = 1
+            }
+            
+            //插入今日日志
+            var indexPathList = [IndexPath]()
+            for (index, _) in todayNoteList[0].list().enumerated(){
+                let indexPath = IndexPath(row: index, section: section)
+                indexPathList.append(indexPath)
+            }
+            if isTodayNoteOpen{    //显示今日提醒
+                tableView.insertRows(at: indexPathList, with: animation)
+            }else{              //移除今日提醒
+                let rowsCount = tableView.numberOfRows(inSection: section)
+                if rowsCount == indexPathList.count{
+                    tableView.deleteRows(at: indexPathList, with: animation)
+                }
+            }
+        default:        //往后
+            isFutureNoteOpen = sender.isSelected
+            sender.isSelected = !sender.isSelected
+            
+            let futureNoteList = noteTypeList.filter { (noteType) -> Bool in
+                if case NoteType.future(_) = noteType{
+                    return true
+                }
+                return false
+            }
+            
+            //判断是否有将来日志
+            guard !futureNoteList.isEmpty else {
+                return
+            }
+            
+            
+            
+            
+            
+            //判断section
+            var section = 0
+            if noteTypeList.count == 3 {
+                section = 2
+            }else if noteTypeList.count == 2 {
+                section = 1
+            }
+            
+            //插入将来日志
+            var indexPathList = [IndexPath]()
+            for (index, _) in futureNoteList[0].list().enumerated(){
+                let indexPath = IndexPath(row: index, section: section)
+                indexPathList.append(indexPath)
+            }
+            if isFutureNoteOpen{    //显示将来提醒
+                tableView.insertRows(at: indexPathList, with: animation)
+            }else{              //移除将来提醒
+                let rowsCount = tableView.numberOfRows(inSection: section)
+                if rowsCount == indexPathList.count{
+                    tableView.deleteRows(at: indexPathList, with: animation)
+                }
             }
         }
     }
@@ -407,13 +606,12 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         let cell = tableView.cellForRow(at: indexPath)
         
         CATransaction.begin()
+        tableView.beginUpdates()
         CATransaction.setCompletionBlock {
             
         }
-        tableView.beginUpdates()
         tableView.endUpdates()
         CATransaction.commit()
-
         //绘制圆角计算
         var isTopRadius = false
         var isBottomRadius = false
@@ -424,6 +622,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
             isBottomRadius = true
         }
         cell?.setCellRadius(withTop: isTopRadius, withBottom: isBottomRadius)
+
     }
     
     //取消选中后，处理单个圆角
@@ -452,11 +651,70 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource{
         CATransaction.commit()
         
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.mainButton.frame.origin.y = view_size.height - self.mainButton.frame.height / 4
+        })
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        endMainButtonAnimation()
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        endMainButtonAnimation()
+    }
+    
+    private func endMainButtonAnimation() {
+        UIView.animate(withDuration: 0.3) {
+            self.mainButton.frame = self.mainButtonFrame ?? .zero
+        }
+    }
+    
+    //以下作用于排序
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle.delete
+    }
 }
 
 //MARK:- 触摸事件
 extension MainVC{
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
+    }
+}
+
+//MARK:- 通讯协议
+extension MainVC: WCSessionDelegate{
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        
+    }
+    
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        
+    }
+    
+    func sessionDidDeactivate(_ session: WCSession) {
+        
+    }
+    
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        updateToWatch()
+    }
+    
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        //updateToWatch()
+    }
+    
+    func sessionReachabilityDidChange(_ session: WCSession) {
+        updateToWatch()
     }
 }

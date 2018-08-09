@@ -39,7 +39,7 @@ extension MenuVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return MenuItem.sharedItems.count + 1
+        return MenuItem.sharedItems.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -47,7 +47,7 @@ extension MenuVC: UITableViewDelegate, UITableViewDataSource {
         if row == 0{
             return view.frame.height / 2
         }
-        return view.frame.height / 2 / 3
+        return view.frame.height / 2 / 2
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -61,7 +61,14 @@ extension MenuVC: UITableViewDelegate, UITableViewDataSource {
         if row == 0{
             cell = tableView.dequeueReusableCell(withIdentifier: "cell0", for: indexPath)
             let cell0 = cell as! MenuCell0
-            cell0.label.text = "我偷偷地告诉你，有一个地方叫做稻城，我要和我最心爱的人一起去那里，看蔚蓝的天空，看白色的雪山，看金色的草地，看一场秋天的童话，我要告诉她，如果没有住在你的心里，都是客死他乡，我要告诉她，相爱这件事情，就是永远在一起。"
+            
+            let formatString = "yyy" + localized("menu_year", comment: "年") + "M" + localized("menu_month", comment: "月") + "d" + localized("menu_day", comment: "日")
+            var text = Date().formatString(with: formatString)
+            text += "\n"
+            text += Date().formatString(with: "E")
+            text += "\n"
+            text += GANCalendar.toLunarText(withSolar: Date()) ?? ""
+            cell0.label.text = text 
             cell0.backgroundColor = .home
         }else{
             cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath)

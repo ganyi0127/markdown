@@ -1,0 +1,27 @@
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "AEw-oJ-Qbw"; */
+"AEw-oJ-Qbw.text" = "Label";
+
+/* Class = "UILabel"; text = "curCount/maxCount"; ObjectID = "Jdc-x8-Xhr"; */
+"Jdc-x8-Xhr.text" = "curCount/maxCount";
+
+/* Class = "UINavigationItem"; title = "新建待办事项"; ObjectID = "LBO-ye-KjT"; */
+"LBO-ye-KjT.title" = "新建待办事项";
+
+/* Class = "UILabel"; text = "tag"; ObjectID = "ab2-Od-cdt"; */
+"ab2-Od-cdt.text" = "标签";
+
+/* Class = "UILabel"; text = "提醒日期/时间"; ObjectID = "e0c-F3-Bsw"; */
+"e0c-F3-Bsw.text" = "提醒日期/时间";
+
+/* Class = "UIButton"; normalTitle = "yyyy-MM-dd"; ObjectID = "nCd-p4-XAe"; */
+"nCd-p4-XAe.normalTitle" = "yyyy-MM-dd";
+
+/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "ssy-Le-Q9e"; */
+"ssy-Le-Q9e.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "UIButton"; normalTitle = "HH:mm:ss"; ObjectID = "tQM-2Q-oVX"; */
+"tQM-2Q-oVX.normalTitle" = "HH:mm:ss";
+
+/* Class = "UILabel"; text = "state"; ObjectID = "yvt-9g-vak"; */
+"yvt-9g-vak.text" = "提醒状态";

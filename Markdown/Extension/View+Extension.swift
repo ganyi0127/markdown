@@ -36,7 +36,7 @@ extension UIView{
         }else{
             corner = []
         }
-        let roundedRect = CGRect(x: .edge8, y: .edge8, width: bounds.width - .edge8 * 2, height: bounds.height - .edge8 * 2)
+        let roundedRect = CGRect(x: .edge8, y: .edge8, width: view_size.width - .edge8 * 2, height: bounds.height - .edge8 * 2)
         let cornerRadii = CGSize(width: .cornerRadius, height: .cornerRadius)
         let path = UIBezierPath(roundedRect: roundedRect, byRoundingCorners: corner, cornerRadii: cornerRadii)
         let maskLayer = CAShapeLayer()

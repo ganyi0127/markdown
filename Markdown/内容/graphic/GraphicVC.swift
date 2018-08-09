@@ -31,6 +31,8 @@ class GraphicVC: UIViewController{
     }
     
     private func config(){
+        navigationItem.title = localized("statistics", comment: "统计")
+        
         view.backgroundColor = .background
         
         //解决重复刷新高度产生错误的bug

@@ -54,7 +54,7 @@ class GraphicView: UIView {
             if i % 3 != 0{
                 continue
             }
-            let monthTitle = NSString(string: "\(i + 1)月")
+            let monthTitle = NSString(string: "\(i + 1)" + localized("graphic_month", comment: "月"))
             var monthTitleRect = monthTitle.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
             monthTitleRect.origin = CGPoint(x: x - size.width / 2,
                                             y: bounds.height - .edge16)

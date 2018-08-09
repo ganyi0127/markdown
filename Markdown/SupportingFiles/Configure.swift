@@ -40,6 +40,11 @@ let tagColorList: [UIColor] = [UIColor.init(colorHex: 0xff3b2f),
                                UIColor.init(colorHex: 0x52d865),
                                UIColor.init(colorHex: 0xfdce00)]
 
+///字符串国际化函数
+func localized(_ key: String, comment: String = "") -> String{
+    return NSLocalizedString(key, comment: comment)
+}
+
 //MARK:- 正则表达式
 struct Regex {
     let regex: NSRegularExpression?

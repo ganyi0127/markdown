@@ -73,6 +73,10 @@ class EditVC: UIViewController {
             noteTag = Int(n.tag)
             
             tableView.reloadData()
+            
+            navigationItem.title = localized("edit", comment: "编辑代办事项")
+        }else{
+            navigationItem.title = localized("create", comment: "新建代办事项")
         }
     }
     
@@ -167,13 +171,15 @@ class EditVC: UIViewController {
         //判断是否填写内容
         let tempText = textView.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         guard !tempText.isEmpty else {
-            notif(withTitle: "需填写内容")
+            let localizedString = localized("empty content is not allow", comment: "需填写内容")
+            notif(withTitle: localizedString)
             return
         }
         
         //当消息开启的时候需要提供时间
         if isOn && (notifyDate == nil || notifyTime == nil){
-            notif(withTitle: "需设置完整日期与时间")
+            let localizedString = localized("you did not set date & time", comment: "需设置完整日期与时间")
+            notif(withTitle: localizedString)
             return
         }
         
@@ -215,7 +221,8 @@ class EditVC: UIViewController {
         note?.text = textView.text
         note?.tag = Int32(noteTag)
         guard coredataHandler.commit() else{
-            notif(withTitle: "提交错误")
+            let localizedString = localized("commit error", comment: "提交错误")
+            notif(withTitle: localizedString)
             return
         }
         note?.setNotifStatus(withIsOpen: true)
@@ -334,21 +341,21 @@ extension EditVC: UITableViewDelegate, UITableViewDataSource{
         if row == 0{
             cell = tableView.dequeueReusableCell(withIdentifier: "cell0")
             let cell0 = cell as! EditVCCell0
-            cell0.keyLabel.text = "提醒日期"
+            cell0.keyLabel.text = localized("edit_date", comment: "提醒日期")
             if let date = notifyDate{
                 cell0.valueLabel.text = date.formatString(with: "yyy-M-d E")
             }else{
-                cell0.valueLabel.text = "未选择日期"
+                cell0.valueLabel.text = localized("edit_nodate", comment: "未选择日期")
             }
             isTopFlag = true
         }else if row == 1{
             cell = tableView.dequeueReusableCell(withIdentifier: "cell0")
             let cell0 = cell as! EditVCCell0
-            cell0.keyLabel.text = "提醒时间"
+            cell0.keyLabel.text = localized("edit_time", comment: "提醒时间")
             if let time = notifyTime{
                 cell0.valueLabel.text = time.formatString(with: "hh:mm")
             }else{
-                cell0.valueLabel.text = "未选择时间"
+                cell0.valueLabel.text = localized("edit_notime", comment: "未选择时间")
             }
         }else if row == 2{
             cell = tableView.dequeueReusableCell(withIdentifier: "cell1")
@@ -358,7 +365,9 @@ extension EditVC: UITableViewDelegate, UITableViewDataSource{
                 isOn in
                 if self.notifyDate == nil || self.notifyTime == nil{
                     if isOn {
-                        self.notif(withTitle: self.notifyDate == nil ? "需设置日期" : "需设置时间")
+                        let editNeedDateLocalizedString = localized("edit_needdate", comment: "需设置日期")
+                        let editNeedTimeLocalizedString = localized("edit_needdate", comment: "需设置时间")
+                        self.notif(withTitle: self.notifyDate == nil ? editNeedDateLocalizedString : editNeedTimeLocalizedString)
                         cell1.notifSwitch.setOn(false, animated: true)
                     }
                 }else{

@@ -9,6 +9,34 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>Markdown_watch (Notification).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>Markdown_watch.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>323D34E11F9EF737002FC52F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>323D34F81F9EF737002FC52F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>323D35031F9EF737002FC52F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 	</dict>
 </dict>
 </plist>

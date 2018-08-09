@@ -28,7 +28,7 @@ class GraphicVCCell: UITableViewCell {
             }
             
             //设置年份
-            yearLabel.text = "\(tuple.year)年"
+            yearLabel.text = "\(tuple.year)" + localized("graphic_year", comment: "年")
             
             
             //设置计数
@@ -50,7 +50,7 @@ class GraphicVCCell: UITableViewCell {
         gradient.startPoint = CGPoint(x: 0, y: 0)
         gradient.endPoint = CGPoint(x: 0, y: 1)
         gradient.locations = [0, 1]
-        gradient.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: 300)
+        gradient.frame = CGRect(x: 0, y: 0, width: view_size.width, height: 300)
         return gradient
     }()
     

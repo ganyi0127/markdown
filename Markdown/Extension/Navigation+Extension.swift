@@ -42,83 +42,17 @@ extension UINavigationController: UINavigationControllerDelegate{
                 self.isNavigationBarHidden = false
             })
         }
-        return
+        
         //判断是否为根视图
-        if viewControllers.count == 1{
-            /*
-             navigationBar.tintColor = wordColor
-             
-             if navigationItem.leftBarButtonItem == nil {
-             if viewController.isKind(of: StateVC.self){
-             if viewController.navigationItem.leftBarButtonItem == nil{
-             //                        viewController.navigationItem.leftBarButtonItem = linkBarButton
-             //手环状态视图
-             let peripheral = PeripheralManager.share().currentPeripheral
-             let image = peripheral?.state == CBPeripheralState.connected ? globalBandImageMap[.normal]! : globalBandImageMap[.disConnected]!
-             let imageSize = image?.size
-             let imageFrame = CGRect(origin: .zero, size: imageSize!)
-             let imageView = UIImageView(frame: imageFrame)
-             imageView.image = image
-             //                        let tap = UITapGestureRecognizer(target: (viewController as! StateVC).topView, action: #selector((viewController as! StateVC).topView.clickCalendar))
-             //                        tap.numberOfTapsRequired = 1
-             //                        tap.numberOfTouchesRequired = 1
-             //                        imageView.addGestureRecognizer(tap)
-             if bandItem == nil{
-             bandItem = UIBarButtonItem(customView: imageView)
-             }
-             viewController.navigationItem.leftBarButtonItem = bandItem!
-             }
-             }
-             }
-             
-             if navigationItem.rightBarButtonItem == nil {
-             if viewController.isKind(of: StateVC.self){
-             //头像
-             let image = UIImage(named: "resource/me/me_head_boy")
-             let imageSize = CGSize(width: navigation_height! * 0.98, height: navigation_height! * 0.98)
-             let imageFrame = CGRect(origin: .zero, size: imageSize)
-             let imageView = UIImageView(frame: imageFrame)
-             imageView.image = image
-             let maskLayer = CAShapeLayer()
-             maskLayer.path = UIBezierPath(ovalIn: imageFrame).cgPath
-             imageView.layer.mask = maskLayer
-             let tap = UITapGestureRecognizer(target: (viewController as! StateVC).topView, action: #selector((viewController as! StateVC).topView.clickCalendar))
-             tap.numberOfTapsRequired = 1
-             tap.numberOfTouchesRequired = 1
-             imageView.addGestureRecognizer(tap)
-             let heardItem = UIBarButtonItem(customView: imageView)
-             viewController.navigationItem.rightBarButtonItem = heardItem
-             }else if viewController.isKind(of: MeVC.self){
-             //个人视图
-             let image = UIImage(named: "resource/me/me_setting")
-             let imageSize = CGSize(width: navigation_height! * 0.6, height: navigation_height! * 0.6)
-             let calenderBarButton = UIBarButtonItem(image: image?.transfromImage(size: imageSize), style: .done, target: viewController, action: #selector(MeVC.clickSetting(sender:)))
-             viewController.navigationItem.rightBarButtonItem = calenderBarButton
-             }
-             }
-             
-             //设置显示navigation
-             if viewController.isKind(of: FunVC.self) || viewController.isKind(of: MeVC.self){
-             //地图页面置透明
-             setNavigation(hidden: true)
-             
-             }else{
-             //设置为不透明
-             setNavigation(hidden: false)
-             
-             navigationBar.topItem?.title = "" //"FunSport"
-             }
-             
-             //显示tabbar
-             setTabbar(hidden: false)
-             */
-        }else{
-            
-            //隐藏tabbar
-            setTabbar(hidden: true)
-            
-            setNavigation(hidden: false)
-        }
+//        if viewControllers.count == 1{
+//
+//        }else{
+//            
+//            //隐藏tabbar
+//            setTabbar(hidden: true)
+//
+//            setNavigation(hidden: false)
+//        }
     }
     
     

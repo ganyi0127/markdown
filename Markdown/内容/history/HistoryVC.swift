@@ -67,7 +67,7 @@ class HistoryVC: UIViewController {
     private func config(){
         
         automaticallyAdjustsScrollViewInsets = false
-        navigationItem.title = "完成事项"
+        navigationItem.title = localized("history", comment: "已完成")
         
         view.backgroundColor = .background
         tableView.rowHeight = UITableViewAutomaticDimension

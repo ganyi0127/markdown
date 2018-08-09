@@ -48,6 +48,7 @@ class EditVCCell1: UITableViewCell {
     }
 }
 
+//MARK:- 选择标签cell
 class EditVCCell2: UITableViewCell {
     
     @IBOutlet weak var keyLabel: UILabel!
@@ -86,7 +87,7 @@ class EditVCCell2: UITableViewCell {
         
         let length = frame.height * 0.7
         let count = tagColorList.count
-        let originX = frame.width - CGFloat(count) * frame.height - .edge16
+        let originX = view_size.width - .edge8 * 2 - CGFloat(count) * frame.height - .edge8
         let y = (frame.height - length)  / 2
         for (index, tagColor) in tagColorList.enumerated(){
             let x = originX + CGFloat(index) * frame.height + (frame.height - length) / 2
@@ -109,8 +110,8 @@ class EditVCCell2: UITableViewCell {
     
     private func moveSelectedView(toTag tag: Int){
         let count = tagColorList.count
-        let originX = frame.width - CGFloat(count) * frame.height
-        let x = originX + CGFloat(tag - 1) * frame.height + (frame.height - 8) / 2 - .edge16
+        let originX = view_size.width - .edge8 * 2 - CGFloat(count) * frame.height
+        let x = originX + CGFloat(tag - 1) * frame.height + (frame.height - 8) / 2 - .edge8
         let newOrigin = CGPoint(x: x, y: (self.frame.height - 8) / 2)
         
         if selectedView?.frame.origin.x == 0{

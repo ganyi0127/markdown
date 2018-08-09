@@ -1,0 +1,36 @@
+/* 
+  Localizable.strings
+  Markdown
+
+  Created by YiGan on 2018/8/5.
+  Copyright © 2018 YiGan. All rights reserved.
+*/
+
+
+"today" = "Today";
+"unfinished" = "Unfinished";
+
+"edit_date" = "date";
+"edit_time" = "time";
+"edit_nodate" = "none";
+"edit_notime" = "none";
+"edit_needdate" = "need to set date";
+"edit_needtime" = "need to set time";
+
+//菜单
+"menu_main" = "Home";
+"menu_statistics" = "Statistics";
+"menu_history" = "History";
+"menu_setting" = "Setting";
+"menu_year" = ".";
+"menu_month" = ".";
+"menu_day" = "";
+
+//导航
+"statistics" = "Statistics";
+"history" = "History";
+
+//历史
+"graphic_year" = "";
+"graphic_month" = "";
+

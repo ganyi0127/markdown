@@ -15,7 +15,7 @@ class InitVC: UIViewController {
     
     
     fileprivate var menuVC: MenuVC?
-    fileprivate var mainVC: MainVC?
+    var mainVC: MainVC?
     
     fileprivate var progress:CGFloat?
     
@@ -112,7 +112,7 @@ extension InitVC: UIScrollViewDelegate{
     
     func menuTransformForPercent(_ percent: CGFloat) -> CATransform3D {
         var identity = CATransform3DIdentity
-        identity.m34 = -1 / 1000   //1 / [camera distance]
+        identity.m34 = -1 / 1000
         let remainingPercent = 1 - percent
         let angle = -remainingPercent * .pi / 2
         let rotationTransform = CATransform3DRotate(identity, angle, 0, 1, 0)

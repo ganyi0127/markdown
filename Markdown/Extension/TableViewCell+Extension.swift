@@ -12,7 +12,7 @@ extension UITableViewCell{
     func setGraphicRadius(){
         let corner: UIRectCorner = [.topRight, .topLeft, .bottomRight, .bottomLeft]
         
-        let roundedRect = CGRect(x: .edge8, y: .edge8, width: bounds.width - .edge8 * 2, height: bounds.height - .edge8 * 2)
+        let roundedRect = CGRect(x: .edge8, y: .edge8, width: view_size.width - .edge8 * 2, height: bounds.height - .edge8 * 2)
         let cornerRadii = CGSize(width: .cornerRadius, height: .cornerRadius)
         let path = UIBezierPath(roundedRect: roundedRect, byRoundingCorners: corner, cornerRadii: cornerRadii)
         let maskLayer = CAShapeLayer()
@@ -32,12 +32,22 @@ extension UITableViewCell{
         }else{
             corner = []
         }
-        let roundedRect = CGRect(x: .edge8, y: 0, width: bounds.width - .edge8 * 2, height: bounds.height)
+        let roundedRect = CGRect(x: .edge8, y: 0, width: view_size.width - .edge8 * 2, height: bounds.height)
         let cornerRadii = CGSize(width: .cornerRadius, height: .cornerRadius)
         let path = UIBezierPath(roundedRect: roundedRect, byRoundingCorners: corner, cornerRadii: cornerRadii)
-        let maskLayer = CAShapeLayer()
-        maskLayer.path = path.cgPath
-        layer.mask = maskLayer
+        
+        if true || layer.mask == nil {
+            let maskLayer = CAShapeLayer()
+            maskLayer.path = path.cgPath
+            layer.mask = maskLayer
+        }else {
+            let anim = CABasicAnimation(keyPath: "path")
+            anim.toValue = path.cgPath
+            anim.isRemovedOnCompletion = false
+            anim.duration = 0.2
+            anim.fillMode = kCAFillModeBoth
+            layer.mask?.add(anim, forKey: nil)
+        }
     }
     
     ///添加顶部分割线

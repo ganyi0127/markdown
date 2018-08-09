@@ -149,8 +149,6 @@ class Selector: UIView {
                 datePickerView?.setDate(defaultDate, animated: true)
             }
             addSubview(datePickerView!)
-        default:
-            break
         }
     }
     
@@ -165,8 +163,6 @@ class Selector: UIView {
         switch selectorType as SelectorType {
         case .birthday, .date, .time:
             value = sender.date
-        default:
-            break
         }
     }
     

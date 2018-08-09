@@ -65,6 +65,9 @@ class PushTransition0: NSObject, UIViewControllerAnimatedTransitioning {
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = circlePathInitial.cgPath
+        shapeLayer.shadowColor = UIColor.black.cgColor
+        shapeLayer.shadowRadius = 8
+        shapeLayer.shadowOffset = CGSize(width: 0, height: 8)
         toViewController?.view.layer.mask = shapeLayer
         
         let maskAnim = CABasicAnimation(keyPath: "path")

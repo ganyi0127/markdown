@@ -35,19 +35,19 @@ class MenuItem {
         
         switch menuType {
         case .home:
-            title = "主页"
+            title = localized("menu_main", comment: "主页")
             color = .home
             image = UIImage()
         case .graphic:
-            title = "统计"
+            title = localized("menu_statistics", comment: "统计")
             color = .sub
             image = #imageLiteral(resourceName: "graphic")
         case .history:
-            title = "历史"
+            title = localized("menu_history", comment: "已完成")
             color = .main
             image = #imageLiteral(resourceName: "history")
         case .setting:
-            title = "设置"
+            title = localized("menu_setting", comment: "设置")
             color = .deep
             image = #imageLiteral(resourceName: "setting")
         }
